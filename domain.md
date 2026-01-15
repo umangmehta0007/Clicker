@@ -24,16 +24,12 @@ classDiagram
         - list~Upgrades~ upgraded
         - int totalGifts
         
+        %%Purchasing the upgrade and adding it to the list
         +buy(Upgrades u) void
-        +add() void 
-        %% this is more like a listener.
         
-        %% adding gifts to total gifts depending on upgrades you have
-       
-        %% should I introduce getters for now or not needed.
-        +name() String
-        +totalGifts() int
-        +upgrades() List~Upgrades~
+        %%this add method is responsible for calculating total gifts per click
+        %%and adding them to total gifts per click.
+        +add() void 
         
     }
     note for Upgrades "Invariant Properties
@@ -44,6 +40,9 @@ classDiagram
         
     class Upgrades{
         <<Interface>>
+            
+        %% This method would give the speciality of my upgrade
+        %% Calculating the gifts/click as per the upgrade. 
         +giftsDelivered() int
     }
 

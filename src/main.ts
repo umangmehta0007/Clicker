@@ -40,3 +40,5 @@ class Pokemon{
 }
 
 let myPokemon = new Pokemon(19);
+
+console.log(myPokemon);

@@ -14,7 +14,7 @@ classDiagram
                 <li> name != null
                 <li> name.length() >=1
                 <li>upgraded != null
-                <li> loop: no Upgrades are null in upgraded
+                <li> loop: no elements(Upgrades) are null in upgraded
                 <li> totalGifts >= 0
             </ul>
         "
@@ -26,9 +26,12 @@ classDiagram
         
         +buy(Upgrades u) void
         +sell(Upgrades u) void
-
-    %% should I introduce getters for now or not needed.
-
+        +add() int 
+        
+        %% adding gifts to total gifts depending on upgrades you have
+        
+        
+        %% should I introduce getters for now or not needed.
         +name() String
         +totalGifts() int
         +upgrades() List~Upgrades~
@@ -65,7 +68,7 @@ classDiagram
         + giftsDelivered() int
     }
     
-    Employee o-- Van
+    Employee --o Van
 
     Company--* Employee
     Company--* Van

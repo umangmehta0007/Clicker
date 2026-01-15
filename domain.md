@@ -26,7 +26,7 @@ classDiagram
         
         +buy(Upgrades u) void
         +sell(Upgrades u) void
-        +add() int 
+        +add() void 
         
         %% adding gifts to total gifts depending on upgrades you have
         

@@ -12,8 +12,8 @@ class Pokemon{
     #hp: number;
     static #damage = -1;
 
-    constructor(intialHp: number){
-        this.#hp = intialHp;
+    constructor(initialHp: number){
+        this.#hp = initialHp;
         this.#checkPokemon();
     }
 

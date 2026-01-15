@@ -18,7 +18,7 @@ flowchart
     clicked{Process Gift Click}
     
     hs == Gift Button ==> clicked
-    clicked -.Gift Successfully Deliverd.->hs
+    clicked -.Gift Successfully Delivered.->hs
     
     
 ```

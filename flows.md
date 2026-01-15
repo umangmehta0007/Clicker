@@ -14,7 +14,7 @@ This starts with your homescreen/welcome screen of the game.
 
 flowchart
         
-    hs[[HOME SCREEN]]
+    hs[[GAME SCREEN]]
     clicked{Process Gift Click}
     
     hs == Gift Button ==> clicked
@@ -25,10 +25,12 @@ flowchart
 
 ## Purchasing Upgrades
 
+While playing, you can buy upgrades.
+
 ```mermaid
 
 flowchart
-    hs[[HOME SCREEN]]
+    hs[[GAME SCREEN]]
     upgrades{Processing Upgrade Purchase}
         
         hs==Employee Button==>upgrades
@@ -36,28 +38,5 @@ flowchart
         
         upgrades-.Successfully added the upgrade.->hs
         upgrades-.Not enough gifts to upgrade.->hs
-
-```
-
-## Running the game
-
-```mermaid
-
-flowchart
-    hs[[HOME SCREEN]]
-    %%dg[Deliver Gifts]
-    %%ug[upgrade]
-    clicked{Process Gift Click}
-    upgrades{Processing Upgrade Purchase}
-
-    hs == Gift Button ==> clicked
-    
-    hs==Employee Button==>upgrades
-    hs==Van Button==>upgrades
-
-    upgrades-.Successfully added the upgrade.->hs
-    upgrades-.Not enough gifts to upgrade.->hs
-    clicked -.Gift Successfully Deliverd.->hs
-
 
 ```

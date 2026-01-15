@@ -25,12 +25,11 @@ classDiagram
         - int totalGifts
         
         +buy(Upgrades u) void
-        +sell(Upgrades u) void
         +add() void 
+        %% this is more like a listener.
         
         %% adding gifts to total gifts depending on upgrades you have
-        
-        
+       
         %% should I introduce getters for now or not needed.
         +name() String
         +totalGifts() int

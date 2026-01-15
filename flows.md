@@ -15,7 +15,7 @@ This starts with your homescreen/welcome screen of the game.
 flowchart
         
     hs[[HOME SCREEN]]
-    clicked{Adding Delivered Gifts}
+    clicked{Process Gift Click}
     
     hs == Gift Button ==> clicked
     clicked -.Gift Successfully Deliverd.->hs
@@ -29,7 +29,7 @@ flowchart
 
 flowchart
     hs[[HOME SCREEN]]
-    upgrades{Processing Purchase}
+    upgrades{Processing Upgrade Purchase}
         
         hs==Employee Button==>upgrades
         hs==Van Button==>upgrades
@@ -47,8 +47,8 @@ flowchart
     hs[[HOME SCREEN]]
     %%dg[Deliver Gifts]
     %%ug[upgrade]
-    clicked{Adding Delivered Gifts}
-    upgrades{Processing Purchase}
+    clicked{Process Gift Click}
+    upgrades{Processing Upgrade Purchase}
 
     hs == Gift Button ==> clicked
     

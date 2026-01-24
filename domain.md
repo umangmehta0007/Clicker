@@ -19,11 +19,7 @@ classDiagram
         - list~Upgrades~ upgraded
         - int totalGifts
         
-        %%Purchasing the upgrade and adding it to the list
         +buyUpgrade(Upgrades u) void
-        
-        %%this add method is responsible for calculating total gifts per click
-        %%and adding them to total gifts per click.
         +addGifts() void 
         
     }
@@ -40,8 +36,6 @@ classDiagram
         -int gifts_per_click
         -int price
             
-        %% This method would give the speciality of my upgrade
-        %% Calculating the gifts/click as per the upgrade. 
         +giftsPerClick() int
     }
 
@@ -64,3 +58,13 @@ classDiagram
     Employee--|>Upgrades
     Van--|>Upgrades
 ```
+## Methods: 
+* `giftsPerClick()` :  returns the number of gifts contributed per click by this upgrade
+* `buyUpgrade(Upgrades u)` : adds a purchased upgrade to the company’s upgrades list
+* `addGifts()`: sums gifts per click from all upgrades and increments totalGifts.
+
+### Modified the domain model: 
+* Added a super class instead of interface 
+* removed invariants where it was checking null as in TypeScript we don't need to check for the null 
+* super class had properties for price/cost of upgrade and gifts delivered per click made by that upgrade
+* relationships were redefined"

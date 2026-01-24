@@ -11,67 +11,56 @@ classDiagram
         
         note for Company "Invariant Properties
              <ul> 
-                <li> name != null
-                <li> name.length() >=1
-                <li>upgraded != null
-                <li> loop: no elements(Upgrades) are null in upgraded
                 <li> totalGifts >= 0
             </ul>
         "
     
     class Company{
-        - String name
         - list~Upgrades~ upgraded
         - int totalGifts
         
         %%Purchasing the upgrade and adding it to the list
-        +buy(Upgrades u) void
+        +buyUpgrade(Upgrades u) void
         
         %%this add method is responsible for calculating total gifts per click
         %%and adding them to total gifts per click.
-        +add() void 
+        +addGifts() void 
         
     }
     note for Upgrades "Invariant Properties
              <ul> 
-                Interface Don't have Invariant properties as don't hold any data
+                <li>gifts_per_click>=1
+                <li>price>=1
             </ul>
         "
         
     class Upgrades{
-        <<Interface>>
+        <<Abstract>>
+        
+        -int gifts_per_click
+        -int price
             
         %% This method would give the speciality of my upgrade
         %% Calculating the gifts/click as per the upgrade. 
-        +giftsDelivered() int
+        +giftsPerClick() int
     }
 
     note for Employee "Invariant Properties
              <ul> 
-                <li> GIFTS_PER_CLICK >= 0
+                  No class-specific invariants. 
             </ul>
         "
     class Employee{
-        - int GIFTS_PER_CLICK
-        + giftsDelivered() int
     }
-    
     note for Van "Invariant Properties
              <ul> 
-                <li> GIFTS_PER_CLICK >= 0
+                No class-specific invariants. 
             </ul>
         "
     class Van{
-        - int GIFTS_PER_CLICK
-        + giftsDelivered() int
     }
     
-    Employee --o Van
-
-    Company--* Employee
-    Company--* Van
-    
-    
-    Employee..|>Upgrades
-    Van..|>Upgrades
+    Company--* Upgrades
+    Employee--|>Upgrades
+    Van--|>Upgrades
 ```

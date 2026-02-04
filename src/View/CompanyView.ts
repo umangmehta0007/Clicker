@@ -1,26 +1,31 @@
 import type Company from "../Model/Company.ts";
-// import type CompanyController from "../Controller/CompanyController.ts";
+import type CompanyController from "../Controller/CompanyController.ts";
 
 export default class  CompanyView{
 
     #company: Company;
-    #teamEl: HTMLDivElement;
+    #teamEl: HTMLUListElement;
+    #companyController: CompanyController;
 
 
-    constructor(company: Company){
+    constructor(company: Company,companyController: CompanyController ){
+
         this.#company = company;
-
+        this.#companyController = companyController;
         this.#company.registerListener(this);
-        // document.querySelector('#app')!.innerHTML =
-        //     "<div id = 'company' ><ul></ul> </div>"
         document.querySelector('#app')!.innerHTML =
-            "<div id = 'company'> </div>"
+            "<div id = 'company' >" +
+            "<button id = 'Gift-Button'> Deliver Happiness </button> " +
+            "<ul></ul> " +
+            "</div>"
 
-        this.#teamEl = document.querySelector("#company");
+        this.#teamEl = document.querySelector('#company>ul');
+
+        document.querySelector("#Gift-Button")!.addEventListener("click",(): void=>this.#companyController.addGifts())
+
     }
 
     notify(){
-
         this.#teamEl.replaceChildren();
 
         this.#teamEl.innerHTML = `<strong>${'Total Gifts Delivered: '+this.#company.totalGifts()}</strong>`

@@ -1,7 +1,5 @@
 // import Company from "../Model/Company.ts"
 import CompanyController from "./Controller/CompanyController.ts"
-import UpgradeController from "./Controller/UpgradeController.ts"
-
 
 
 /*
@@ -15,5 +13,4 @@ import UpgradeController from "./Controller/UpgradeController.ts"
 
  */
 
-    let companyController: CompanyController = new CompanyController();
-    let upgradeController: UpgradeController = new UpgradeController(companyController);
+new CompanyController();

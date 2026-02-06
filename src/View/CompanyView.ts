@@ -6,7 +6,10 @@ export default class  CompanyView{
     #company: Company;
     #teamEl: HTMLUListElement;
     #companyController: CompanyController;
-
+    /*
+    This internalState just additonal part: I know it voilates mvp but this is just for visual purposes
+     */
+    #internalState: HTMLDivElement
 
     constructor(company: Company,companyController: CompanyController ){
 
@@ -19,7 +22,8 @@ export default class  CompanyView{
             "<ul></ul> " +
             "</div>"
 
-        this.#teamEl = document.querySelector('#company>ul');
+        this.#teamEl = document.querySelector('#company>ul')!;
+        this.#internalState = document.createElement("div");
 
         document.querySelector("#Gift-Button")!.addEventListener("click",(): void=>this.#companyController.addGifts())
 
@@ -29,6 +33,11 @@ export default class  CompanyView{
         this.#teamEl.replaceChildren();
 
         this.#teamEl.innerHTML = `<strong>${'Total Gifts Delivered: '+this.#company.totalGifts()}</strong>`
+        this.#internalState.id = "sum";
+
+        this.#internalState.innerHTML = `<strong>${'Total Upgrades: '+this.#company.upgrades().length}</strong>`
+
+        document.querySelector("#upgrades")!.append(this.#internalState);
     }
 
 }

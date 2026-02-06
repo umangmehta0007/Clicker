@@ -37,6 +37,8 @@ flowchart
         hs==Van Button==>upgrades
         
         upgrades-.Successfully added the upgrade.->hs
-        upgrades-.Not enough gifts to upgrade.->hs
 
 ```
+### Changes made for phase 1 implementation: 
+
+* `Not enough gifts to upgrade` was successfully removed as per MVP.

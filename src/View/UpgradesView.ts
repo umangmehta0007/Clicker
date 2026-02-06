@@ -1,41 +1,43 @@
-import UpgradeController from "../Controller/UpgradeController.ts";
+import CompanyController from "../Controller/CompanyController.ts";
 
 //import Company from "../Model/Company.ts";
 
 export default class UpgradesView{
 
     #companyEL: HTMLDivElement;
-    #upgradeController: UpgradeController;
+    #companyController: CompanyController;
 
-    constructor(upgradeController: UpgradeController){
+    constructor(companyController: CompanyController){
 
         this.#companyEL = document.querySelector("#company")!;
-        this.#upgradeController =  upgradeController;
+        this.#companyController =  companyController;
+        
         /*
         Creating and Adding button to the Index.html
-         */
+        */
+
         const upgradesEl = document.createElement("div");
         upgradesEl.id = "upgrades";
         this.#companyEL.append(upgradesEl);
 
-        let employeebutton = document.createElement('button');
+        let employeeButton = document.createElement('button');
         let vanButton  = document.createElement('button');
 
-        employeebutton.id = "Employee";
+        employeeButton.id = "Employee";
         vanButton.id = "Van";
 
-        employeebutton.textContent = "Employee (5 clicks Per Click)"
+        employeeButton.textContent = "Employee (5 clicks Per Click)"
         vanButton.textContent = "Van (10 clicks Per Click)"
 
-        upgradesEl.appendChild(employeebutton);
+        upgradesEl.appendChild(employeeButton);
         upgradesEl.appendChild(vanButton);
 
         /*
         Successfully added the button
          */
 
-        employeebutton.addEventListener("click",()=>upgradeController.buyEmployee());
-        vanButton.addEventListener("click",()=>upgradeController.buyVan());
+        employeeButton.addEventListener("click",()=>this.#companyController.buyEmployee());
+        vanButton.addEventListener("click",()=>this.#companyController.buyVan());
 
     }
 

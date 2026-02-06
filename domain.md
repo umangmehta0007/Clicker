@@ -68,3 +68,8 @@ classDiagram
 * removed invariants where it was checking null as in TypeScript we don't need to check for the null 
 * super class had properties for price/cost of upgrade and gifts delivered per click made by that upgrade
 * relationships were redefined"
+
+
+### Modifications for Phase 1 implementations: 
+* Interface listener was added but was restriced to be added in model diagram
+* addtional getters were added to the code. 

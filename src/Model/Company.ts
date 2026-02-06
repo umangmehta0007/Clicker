@@ -16,17 +16,14 @@ export default class Company{
     }
 
     /*
-    This method is for the listener when a button is clicked.
-     */
-    buyUpgrade(u:Upgrades){
-        this.#upgraded.push(u)
-    }
-
-    /*
     /added a getter to get total gifts rn, per click.
      */
     totalGifts(): number{
         return this.#totalGifts;
+    }
+
+    upgrades(): Array<Upgrades>{
+        return this.#upgraded;
     }
 
     /*
@@ -40,6 +37,18 @@ export default class Company{
 
         this.#totalGifts+= totalPerClick;
 
+        this.#notifyAll();
+    }
+
+    /*
+    This method is for the listener when a button is clicked.
+     */
+    buyUpgrade(u:Upgrades){
+        this.#upgraded.push(u);
+
+        /*
+        This notifyAll here is just additonal part: I know it voilates mvp but this is just for visual purposes
+        */
         this.#notifyAll();
     }
 

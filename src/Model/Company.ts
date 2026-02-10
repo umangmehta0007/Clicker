@@ -1,6 +1,7 @@
 
 import Upgrades from "./Upgrades.ts"
 import type Listener from "./Listener.ts"
+import assert from "../assertions.ts";
 
 export default class Company{
 
@@ -13,6 +14,11 @@ export default class Company{
         this.#upgraded = [];
         this.#totalGifts = 0;
         this.#listeners = new Array<Listener>();
+        this.#checkCompany();
+    }
+
+    #checkCompany(){
+        assert(this.#totalGifts>=0, "Gifts should always be greater than equal to zero");
     }
 
     /*
@@ -25,7 +31,6 @@ export default class Company{
     upgrades(): Array<Upgrades>{
         return this.#upgraded;
     }
-
     /*
      *This Method is a logic method whenever a click is done, this method changes
      * the total gifts calculated and adds additional click based on upgrades you have.

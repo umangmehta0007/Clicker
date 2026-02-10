@@ -26,16 +26,13 @@ classDiagram
     note for Upgrades "Invariant Properties
              <ul> 
                 <li>gifts_per_click>=1
-                <li>price>=1
             </ul>
         "
         
     class Upgrades{
         <<Abstract>>
         
-        -int gifts_per_click
-        -int price
-            
+        -int gifts_per_click         
         +giftsPerClick() int
     }
 

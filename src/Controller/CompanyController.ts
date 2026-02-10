@@ -22,7 +22,7 @@ export default class CompanyController{
         this.#company.addGifts();
     }
     buyEmployee():void{
-        const employee: Upgrades= new Employee(0);
+        const employee: Upgrades= new Employee(5);
         this.#company.buyUpgrade(employee);
     }
     buyVan():void{

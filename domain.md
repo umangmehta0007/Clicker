@@ -68,5 +68,7 @@ classDiagram
 
 
 ### Modifications for Phase 1 implementations: 
-* Interface listener was added but was restriced to be added in model diagram
-* addtional getters were added to the code. 
+* Interface listener was added but was restricted to be added in model diagram
+* additional getters were added to the code. 
+* Some Styling was done using chatGPT.
+* Testing was implemented and invariants were added using assertions. 

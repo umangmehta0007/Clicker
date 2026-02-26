@@ -33,7 +33,9 @@ classDiagram
         - Account account
         
         +buypurchasable(Purchasable u) void
-        +addGifts() void 
+        +addGiftsClicker() void
+        +addGiftsAuto()void
+        -calculateProduction() Array<number>
         
     }
     note for Purchasable "Invariant Properties
@@ -107,3 +109,21 @@ classDiagram
 * additional getters were added to the code. 
 * Some Styling was done using chatGPT.
 * Testing was implemented and invariants were added using assertions. 
+
+### Modifications for Phase 2 Design: 
+Modifications for Phase 2 Design:
+* Added an `Account` class to handle login and connect each user to one `Company`.
+* Usernames are unique (natural keys), so I added a unique constraint.
+* Enforced that `Company` name must also be unique to prevent duplicate company identities.
+* Defined a one-to-one relationship between `Account` and `Company`, I could have merged username and password within company but that looked SRP violation to me. 
+* Introduced a `Purchasable` superclass to represent both upgrades and buildings.
+* Since building and upgrades had same properties they came under same hierarchy (name, price, productionValue) into Purchasable.
+* Removed separate variables like gifts_per_click and clicks_per_sec and replaced them with a single productionValue.
+* Kept `Company` as the owner of multiple Purchasable objects (one-to-many relationship).
+* Updated invariants to ensure `price >= 1` and `productionValue >= 1`.
+
+### New Methods in `Company`
+
+* `calculateProduction()` - This method calcuates number of gifts per click and number of clicks by looping over the `purchases`.
+* `addGiftsClicker() void` - this method uses `calculateProduction()` to get number of gifts produced by manual clicking and adding them to `totalGifts`.
+* `addGiftsAuto()void` - This method would run by `setInterval` and get uses `calculateProduction()` to get number of total gifts produced per second.

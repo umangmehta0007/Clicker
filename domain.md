@@ -11,9 +11,8 @@ classDiagram
 
 
     note for Account "Invariant Properties
-             <ul> 
-                No class-specific invariants
-            </ul>
+            
+            ->No class-specific invariants
         "
     class Account{
         -~ string username
@@ -33,13 +32,15 @@ classDiagram
         - list~Purchasable~ purchases
         - Account account
         
-        +purchases(Purchasable u) void
+        +buypurchasable(Purchasable u) void
         +addGifts() void 
         
     }
     note for Purchasable "Invariant Properties
              <ul> 
-                <li>price>=1
+                <li>price>=1<\li>
+                <li>productionValue>=1<\li>
+
             </ul>
         "
         
@@ -48,46 +49,41 @@ classDiagram
         
         -string name
         -number price
+        -number productionValue
         -Company company
     }
 
     note for Employee "Invariant Properties
-             <ul> 
-                  gifts_per_click >=1 
-            </ul>
+            
+            ->No class-specific invariants
         "
     class Employee{
-        -number gifts_per_click 
     }
     note for Van "Invariant Properties
-             <ul> 
-                  gifts_per_click >=1 
-            </ul>
+            
+            ->No class-specific invariants
         "
     class Van{
-        -number gifts_per_click
     }
 
     note for Santa "Invariant Properties
-             <ul> 
-                  clicks_per_sec >=1 
-            </ul>
+            
+            ->No class-specific invariants
         "
     class Santa{
-        -number clicks_per_sec
     }
+    
     note for Amazon "Invariant Properties
-             <ul> 
-                  clicks_per_sec >=1 
-            </ul>
+          
+            ->No class-specific invariants
         "
     class Amazon{
-        -number clicks_per_sec
     }
     
-    Account o--* Company
-    Company o--* Purchasable
-    
+    Company "1" o--* "*" Purchasable
+    Account "1" o--*"1" Company
+
+
     Employee--|>Purchasable
     Van--|>Purchasable
     Santa--|>Purchasable

@@ -124,6 +124,6 @@ Modifications for Phase 2 Design:
 
 ### New Methods in `Company`
 
-* `calculateProduction()` - This method calcuates number of gifts per click and number of clicks by looping over the `purchases`.
+* `calculateProduction()` - This method calcuates and return an array of number of gifts per click and number of clicks by looping over the `purchases`.
 * `addGiftsClicker() void` - this method uses `calculateProduction()` to get number of gifts produced by manual clicking and adding them to `totalGifts`.
 * `addGiftsAuto()void` - This method would run by `setInterval` and get uses `calculateProduction()` to get number of total gifts produced per second.

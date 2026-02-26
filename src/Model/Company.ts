@@ -35,12 +35,12 @@ export default class Company{
      *This Method is a logic method whenever a click is done, this method changes
      * the total gifts calculated and adds additional click based on upgrades you have.
      */
-    addGifts(){
+    addGifts() {
 
         const totalPerClick: number = this.#upgraded.reduce(
-            (acc:number, x)=> acc + x.giftsPerClick(),1);
+            (acc: number, x) => acc + x.giftsPerClick(), 1);
 
-        this.#totalGifts+= totalPerClick;
+        this.#totalGifts += totalPerClick;
 
         this.#notifyAll();
     }

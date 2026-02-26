@@ -8,6 +8,18 @@ ___
 
 ```mermaid
 classDiagram
+
+
+    note for Account "Invariant Properties
+             <ul> 
+                No class-specific invariants
+            </ul>
+        "
+    class Account{
+        -~ string username
+        - string password
+        - Company company
+    }
         
         note for Company "Invariant Properties
              <ul> 
@@ -16,44 +28,71 @@ classDiagram
         "
     
     class Company{
-        - list~Upgrades~ upgraded
-        - int totalGifts
+        -~ string name
+        - number totalGifts
+        - list~Purchasable~ purchases
+        - Account account
         
-        +buyUpgrade(Upgrades u) void
+        +purchases(Purchasable u) void
         +addGifts() void 
         
     }
-    note for Upgrades "Invariant Properties
+    note for Purchasable "Invariant Properties
              <ul> 
-                <li>gifts_per_click>=1
+                <li>price>=1
             </ul>
         "
         
-    class Upgrades{
+    class Purchasable{
         <<Abstract>>
         
-        -int gifts_per_click         
-        +giftsPerClick() int
+        -string name
+        -number price
+        -Company company
     }
 
     note for Employee "Invariant Properties
              <ul> 
-                  No class-specific invariants. 
+                  gifts_per_click >=1 
             </ul>
         "
     class Employee{
+        -number gifts_per_click 
     }
     note for Van "Invariant Properties
              <ul> 
-                No class-specific invariants. 
+                  gifts_per_click >=1 
             </ul>
         "
     class Van{
+        -number gifts_per_click
+    }
+
+    note for Santa "Invariant Properties
+             <ul> 
+                  clicks_per_sec >=1 
+            </ul>
+        "
+    class Santa{
+        -number clicks_per_sec
+    }
+    note for Amazon "Invariant Properties
+             <ul> 
+                  clicks_per_sec >=1 
+            </ul>
+        "
+    class Amazon{
+        -number clicks_per_sec
     }
     
-    Company--* Upgrades
-    Employee--|>Upgrades
-    Van--|>Upgrades
+    Account o--* Company
+    Company o--* Purchasable
+    
+    Employee--|>Purchasable
+    Van--|>Purchasable
+    Santa--|>Purchasable
+    Amazon--|>Purchasable
+    
 ```
 ## Methods: 
 * `giftsPerClick()` :  returns the number of gifts contributed per click by this upgrade

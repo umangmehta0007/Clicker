@@ -13,8 +13,15 @@ It is an event-driven program where each click corresponds to a successful gift 
 
 You can expand your company with upgrades, limited to **two** for the first phase:
 
-* **Addition:** Adds 5 gifts per click
-* **Multiplier:** Adds 10 gifts per click
+* **Addition:** Powers 5 click by Addition
+* **Multiplier:** Powers 10 clicks by Multiplication.
+
+Expansion in Phase 2 was made by Adding buildings: 
+
+* **Santa:** Powers 5 clicks per sec.
+* **Amazon:** Powers 10 clicks per sec.
+
+**With Combination of upgrades and Buildings, gifts will be boosted.**
 
 # Running
 

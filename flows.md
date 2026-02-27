@@ -20,8 +20,8 @@ flowchart
     credentials{Validating Credentials}
     creation{Processing Signup}
     
-    ls== Sign In ==>signin
-    ls== Sign Up ==>signuo
+    ls== Sign In Button ==>signin
+    ls== Sign Up Button ==>signuo
     
     signin==Entering Username and Passoword==>credentials
     credentials -.Invalid Username/Password.->ls
@@ -49,7 +49,7 @@ flowchart
     lg{Log out}
     
     hs == Gift Button ==> clicked
-    hs == Logout ==> lg
+    hs == Logout Button ==> lg
 
     clicked -.Gift Successfully Delivered.->hs
     lg -.Signing Out to Home Screen.->hs

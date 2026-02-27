@@ -40,8 +40,8 @@ classDiagram
     }
     note for Purchasable "Invariant Properties
              <ul> 
-                <li>price>=1<\li>
-                <li>productionValue>=1<\li>
+                <li>price>=1</li>
+                <li>productionValue>=1</li>
 
             </ul>
         "
@@ -49,23 +49,23 @@ classDiagram
     class Purchasable{
         <<Abstract>>
         
-        -string name
+        -~string name
         -number price
         -number productionValue
         -Company company
     }
 
-    note for Employee "Invariant Properties
+    note for Addition "Invariant Properties
             
             ->No class-specific invariants
         "
-    class Employee{
+    class Addition{
     }
-    note for Van "Invariant Properties
+    note for Multiplier "Invariant Properties
             
             ->No class-specific invariants
         "
-    class Van{
+    class Multiplier{
     }
 
     note for Santa "Invariant Properties
@@ -86,35 +86,19 @@ classDiagram
     Account "1" o--*"1" Company
 
 
-    Employee--|>Purchasable
-    Van--|>Purchasable
+    Addition--|>Purchasable
+    Multiplier--|>Purchasable
     Santa--|>Purchasable
     Amazon--|>Purchasable
     
 ```
-## Methods: 
-* `giftsPerClick()` :  returns the number of gifts contributed per click by this upgrade
-* `buyUpgrade(Upgrades u)` : adds a purchased upgrade to the company’s upgrades list
-* `addGifts()`: sums gifts per click from all upgrades and increments totalGifts.
-
-### Modified the domain model: 
-* Added a super class instead of interface 
-* removed invariants where it was checking null as in TypeScript we don't need to check for the null 
-* super class had properties for price/cost of upgrade and gifts delivered per click made by that upgrade
-* relationships were redefined"
-
-
-### Modifications for Phase 1 implementations: 
-* Interface listener was added but was restricted to be added in model diagram
-* additional getters were added to the code. 
-* Some Styling was done using chatGPT.
-* Testing was implemented and invariants were added using assertions. 
-
 ### Modifications for Phase 2 Design: 
 Modifications for Phase 2 Design:
-* Added an `Account` class to handle login and connect each user to one `Company`.
+* Renamed `Employee` and `Van` classes to `Addition` and `Multiplier`.
+* Upgrades now affect both manual clicking and building production.
+* Added an `Account` class to handle login and connect each user to one `Company` and `flows.md` was updated accordingly.
 * Usernames are unique (natural keys), so I added a unique constraint.
-* Enforced that `Company` name must also be unique to prevent duplicate company identities.
+* Enforced that `Company` name and `Purchasables` name must also be unique to prevent duplicate identities.
 * Defined a one-to-one relationship between `Account` and `Company`, I could have merged username and password within company but that looked SRP violation to me. 
 * Introduced a `Purchasable` superclass to represent both upgrades and buildings.
 * Since building and upgrades had same properties they came under same hierarchy (name, price, productionValue) into Purchasable.
@@ -122,8 +106,16 @@ Modifications for Phase 2 Design:
 * Kept `Company` as the owner of multiple Purchasable objects (one-to-many relationship).
 * Updated invariants to ensure `price >= 1` and `productionValue >= 1`.
 
+Also understood that in phase 1, they were specifically talking about `increase the power of clicking` not the number of `gifts_per_click`.
+
+**Moving to design of this, power of clicking will be defined by following and will be done sequentially:** 
+*       Additon class - which will add to power of clicking add 5 clicks
+*       Multiplier class - which will multiply my power of clicking by 10 times. 
+* Building would jsut be giving clicks per second and if we have bought upgrades, it would increase this power in sequence of which upgrades were added. 
+
+
 ### New Methods in `Company`
 
-* `calculateProduction()` - This method calcuates and return an array of number of gifts per click and number of clicks by looping over the `purchases`.
+* `calculateProduction()` - This method calculates and return an array of number of number of clicks by upgrades and number of clicks by buildings looping over the `purchases`.
 * `addGiftsClicker() void` - this method uses `calculateProduction()` to get number of gifts produced by manual clicking and adding them to `totalGifts`.
-* `addGiftsAuto()void` - This method would run by `setInterval` and get uses `calculateProduction()` to get number of total gifts produced per second.
+* `addGiftsAuto()void` - This method would run by `setInterval` and get uses `calculateProduction()` to get number of total gifts produced per second by buildings with upgrades.

@@ -13,8 +13,8 @@ It is an event-driven program where each click corresponds to a successful gift 
 
 You can expand your company with upgrades, limited to **two** for the first phase:
 
-* **Employee:** Adds 5 gifts per click
-* **Van:** Adds 10 gifts per click
+* **Addition:** Adds 5 gifts per click
+* **Multiplier:** Adds 10 gifts per click
 
 # Running
 

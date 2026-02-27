@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import Company from "../src/Model/Company";
 import Upgrades from "../src/Model/Upgrades";
-import Employee from "../src/Model/Employee";
+import Addition from "../src/Model/Addition";
 
 test("Testing a click to deliver gift", ()=>{
     let c = new Company();
@@ -11,7 +11,7 @@ test("Testing a click to deliver gift", ()=>{
 })
 test("Adding an Upgrade", ()=>{
     let c = new Company();
-    let emp : Upgrades = new Employee(5);
+    let emp : Upgrades = new Addition(5);
     c.buyUpgrade(emp);
 
     expect(c.upgrades()).contains(emp);
@@ -31,7 +31,7 @@ test("Company Notifies Listeners", ()=>{
 test("Upgrades Notifies Listeners", ()=>{
     let notify = false;
     let c = new Company();
-    let e: Upgrades = new Employee(5);
+    let e: Upgrades = new Addition(5);
     c.registerListener({notify:()=>notify = true});
 
     c.buyUpgrade(e);

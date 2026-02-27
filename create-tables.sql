@@ -19,10 +19,9 @@ create new table if not exists company(
 
 
 -- Choosing each class and giving it a table as we have limited subclasses. (4 only)
--- Synthetic keys giving as we permit same name for diff employees.
 
-create new table if not exists employee(
-       id serial not null unique,
+create new table if not exists addition(
+       name varchar(255) unique not null,
        price integer not null,
        productionValue integer not null,
        company varchar(255) not null,
@@ -30,18 +29,17 @@ create new table if not exists employee(
        on delete cascade
 );
 
-create new table if not exists van(
-       id serial not null unique,
+create new table if not exists mulitplier(
+       name varchar(255) unique not null,
        price integer not null,
        productionValue integer not null,
        company varchar(255)not null,
        foreign key company references company(name)
         on delete cascade
-
 );
 
 create new table if not exists santa(
-       id serial not null unique,
+       name varchar(255) unique not null,
        price integer not null,
        productionValue integer not null,
        company varchar(255)not null,
@@ -51,7 +49,8 @@ create new table if not exists santa(
 );
 
 create new table if not exists amazon(
-       id serial not null unique,
+
+       name varchar(255) unique not null,
        price integer not null,
        productionValue integer not null,
        company varchar(255)not null,

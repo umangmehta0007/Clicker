@@ -32,7 +32,7 @@
         <line num="66" count="2" type="stmt"/>
         <line num="71" count="2" type="stmt"/>
       </file>
-      <file name="Employee.ts" path="/Users/umangmehta/Desktop/Second Year/WINTER 2026/COMP 2452/Project/clicker/src/Model/Employee.ts">
+      <file name="Addition.ts" path="/Users/umangmehta/Desktop/Second Year/WINTER 2026/COMP 2452/Project/clicker/src/Model/Addition.ts">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
       <file name="Upgrades.ts" path="/Users/umangmehta/Desktop/Second Year/WINTER 2026/COMP 2452/Project/clicker/src/Model/Upgrades.ts">

@@ -92,7 +92,7 @@ ul {
     transform: scale(0.97);
 }
 
-/* Employee emoji */
+/* Addition emoji */
 #Employee::before {
     content: "👨‍💼";
     font-size: 32px;
@@ -102,7 +102,7 @@ ul {
     transform: translateY(-50%);
 }
 
-/* Van emoji */
+/* Multiplier emoji */
 #Van::before {
     content: "🚚";
     font-size: 32px;

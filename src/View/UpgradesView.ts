@@ -23,11 +23,11 @@ export default class UpgradesView{
         let employeeButton = document.createElement('button');
         let vanButton  = document.createElement('button');
 
-        employeeButton.id = "Employee";
-        vanButton.id = "Van";
+        employeeButton.id = "Addition";
+        vanButton.id = "Multiplier";
 
-        employeeButton.textContent = "Employee (5 clicks Per Click)"
-        vanButton.textContent = "Van (10 clicks Per Click)"
+        employeeButton.textContent = "Addition (5 clicks Per Click)"
+        vanButton.textContent = "Multiplier (10 clicks Per Click)"
 
         upgradesEl.appendChild(employeeButton);
         upgradesEl.appendChild(vanButton);

@@ -6,8 +6,38 @@ ___
 
 # Flows of interaction
 
-## Playing game (Delivering Gifts)
+# Logging in or Creating an Account
 
+```mermaid
+
+flowchart
+    
+    ls[[Home Screen]]
+    gs[[Game Screen]]
+    signin[Sign In]
+    signuo[Sign Up]
+    
+    credentials{Validating Credentials}
+    creation{Processing Signup}
+    
+    ls== Sign In Button ==>signin
+    ls== Sign Up Button ==>signuo
+    
+    signin==Entering Username and Passoword==>credentials
+    credentials -.Invalid Username/Password.->ls
+    credentials -.Success Login.->gs
+
+    signuo==Entering username and passowrd ==>creation
+    creation -.Account Already exists.->ls
+    creation -.Successfully Created Account.->ls
+
+
+
+
+```
+
+
+## Playing game (Delivering Gifts)
 This starts with your homescreen/welcome screen of the game.
 
 ```mermaid
@@ -16,27 +46,44 @@ flowchart
         
     hs[[GAME SCREEN]]
     clicked{Process Gift Click}
+    lg{Log out}
     
     hs == Gift Button ==> clicked
-    clicked -.Gift Successfully Deliverd.->hs
-    
-    
+    hs == Logout Button ==> lg
+
+    clicked -.Gift Successfully Delivered.->hs
+    lg -.Signing Out to Home Screen.->hs
+
+
+
 ```
 
-## Purchasing Upgrades
+## Purchasing Upgrades or Buildings
 
-While playing, you can buy upgrades.
+While playing, you can purchase building and upgrades.
 
 ```mermaid
 
 flowchart
     hs[[GAME SCREEN]]
-    upgrades{Processing Upgrade Purchase}
+    upgrades{Processing Purchase}
         
-        hs==Employee Button==>upgrades
-        hs==Van Button==>upgrades
-        
-        upgrades-.Successfully added the upgrade.->hs
-        upgrades-.Not enough gifts to upgrade.->hs
+        hs==Addition Button==>upgrades
+        hs==Multiplier Button==>upgrades
+        hs==Santa Button==>upgrades
+        hs==Amazon Button==>upgrades
+
+
+    upgrades-.Successfully added.->hs
+    upgrades-.Not Enough Gifts to Purchase.->hs
+
 
 ```
+### Changes made for phase 1 implementation: 
+
+* `Not enough gifts to upgrade` was successfully removed as per MVP.
+
+### Changes made for phase 2 design:
+* `Santa` and  `Amazon` were the buildings button added that now could be purchased, along with existing upgrades `Multiplier` and `Addition`.
+* `Not enough gifts to Purchase` was successfully added. 
+

@@ -1,0 +1,138 @@
+/* ===== Base ===== */
+body {
+    font-family: system-ui, sans-serif;
+    background: linear-gradient(135deg, #f0f4ff, #f7f7f7);
+    margin: 0;
+}
+
+/* ===== Main Card ===== */
+#company {
+    max-width: 420px;
+    margin: 60px auto;
+    padding: 24px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    text-align: center;
+}
+
+/* ===== Gift Button ===== */
+#Gift-Button {
+    width: 130px;
+    height: 130px;
+    border-radius: 16px;
+    border: none;
+    background: #fff3cd;
+    cursor: pointer;
+
+    /* fixes overflow + alignment */
+    font-size: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    transition: transform 0.1s ease;
+}
+
+#Gift-Button::before {
+    content: "🎁";
+    font-size: 64px;
+    line-height: 1;
+}
+
+#Gift-Button:hover {
+    transform: scale(1.05);
+}
+
+#Gift-Button:active {
+    transform: scale(0.9);
+}
+
+/* ===== Stats ===== */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 16px;
+    font-size: 1.1rem;
+}
+
+#sum {
+    margin-top: 8px;
+    color: #555;
+}
+
+/* ===== Upgrades ===== */
+#upgrades {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#upgrades button {
+    height: 64px;
+    border-radius: 14px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    padding-left: 70px;
+    background: #eef2ff;
+    position: relative;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+#upgrades button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+#upgrades button:active {
+    transform: scale(0.97);
+}
+
+/* Addition emoji */
+#Employee::before {
+    content: "👨‍💼";
+    font-size: 32px;
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Multiplier emoji */
+#Van::before {
+    content: "🚚";
+    font-size: 32px;
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ===== Full-screen emoji burst (CSS-only) ===== */
+@keyframes screenFade {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Uses :has() to react to the click */
+body:has(#Gift-Button:active)::after {
+    content:
+            "🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁\A"
+            "🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁\A"
+            "🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁";
+    white-space: pre;
+    position: fixed;
+    inset: 0;
+    font-size: 48px;
+    line-height: 1.6;
+    text-align: center;
+    background: rgba(255,255,255,0.6);
+    animation: screenFade 0.7s ease-out;
+    pointer-events: none;
+    z-index: 9999;
+}

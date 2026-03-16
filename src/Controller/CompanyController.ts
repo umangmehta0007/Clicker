@@ -14,8 +14,8 @@ export default class CompanyController{
     #companyView: CompanyView
     #upgradeView: UpgradesView
 
-    constructor(){
-        this.#company = new Company();
+    constructor(company: Company){
+        this.#company = company;
         this.#companyView = new CompanyView(this.#company, this);
         this.#upgradeView = new UpgradesView(this);
         this.#additionBy = 5;

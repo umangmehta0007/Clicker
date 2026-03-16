@@ -9,7 +9,7 @@ export default class  CompanyView{
     /*
     This internalState just additonal part: I know it voilates mvp but this is just for visual purposes
      */
-    #internalState: HTMLDivElement
+    #internalState!: HTMLDivElement
 
     constructor(company: Company,companyController: CompanyController ){
 

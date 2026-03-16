@@ -38,20 +38,38 @@ classDiagram
         -calculateProduction() Array<number>
         
     }
-    note for Purchasable "Invariant Properties
+
+    note for Upgrades "Invariant Properties
              <ul> 
                 <li>price>=1</li>
-                <li>productionValue>=1</li>
+                <li>clicks>=1</li>
+
+            </ul>
+        "
+
+    class Upgrades{
+        <<Abstract>>
+
+        -~string name
+        -number price
+        -number clicks
+        -Company company
+    }
+
+    note for Buildings "Invariant Properties
+             <ul> 
+                <li>price>=1</li>
+                <li>cps>=1</li>
 
             </ul>
         "
         
-    class Purchasable{
+    class Buildings{
         <<Abstract>>
         
         -~string name
         -number price
-        -number productionValue
+        -number cps
         -Company company
     }
 
@@ -82,14 +100,16 @@ classDiagram
     class Amazon{
     }
     
-    Company "1" o--* "*" Purchasable
+    Company "1" o--* "*" Upgrades
+    Company "1" o--* "*" Buildings
+
     Account "1" o--*"1" Company
 
 
-    Addition--|>Purchasable
-    Multiplier--|>Purchasable
-    Santa--|>Purchasable
-    Amazon--|>Purchasable
+    Addition--|>Upgrades
+    Multiplier--|>Upgrades
+    Santa--|>Buildings
+    Amazon--|>Buildings
     
 ```
 ### Modifications for Phase 2 Design: 
@@ -102,7 +122,7 @@ Modifications for Phase 2 Design:
 * Defined a one-to-one relationship between `Account` and `Company`, I could have merged username and password within company but that looked SRP violation to me. 
 * Introduced a `Purchasable` superclass to represent both upgrades and buildings.
 * Since building and upgrades had same properties they came under same hierarchy (name, price, productionValue) into Purchasable.
-* Removed separate variables like gifts_per_click and clicks_per_sec and replaced them with a single productionValue.
+* Removed separate variables like gifts_per_click and cps and replaced them with a single productionValue.
 * Kept `Company` as the owner of multiple Purchasable objects (one-to-many relationship).
 * Updated invariants to ensure `price >= 1` and `productionValue >= 1`.
 

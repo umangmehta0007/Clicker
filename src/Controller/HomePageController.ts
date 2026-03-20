@@ -1,14 +1,11 @@
 //Given will be the controls to check DB and create instances of new Account - Calling Company controller to create instances of company
 
 import HomePageView from "../View/HomePageView.ts";
-// import CompanyController from "./CompanyController.ts";
 import {CreateNewAccountView} from "../View/CreateNewAccountView.ts";
 import Account from "../Model/Account.ts";
 import {SigninAccountView} from "../View/SigninAccountView.ts";
 import CompanyController from "./CompanyController.ts";
 import Company from "../Model/Company.ts";
-import HashingForBrowser from "../Model/HashingForBrowser.ts";
-
 
 export default class HomePageController{
 

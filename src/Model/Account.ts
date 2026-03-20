@@ -75,7 +75,7 @@ export default class Account{
             /*
             Trying to add account to the db, this also checks if it exists and throws exception.
              */
-            const result = await db().query<{
+            await db().query<{
                 username:string,
                 password: string
             }>(`

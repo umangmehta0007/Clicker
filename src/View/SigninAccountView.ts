@@ -14,20 +14,46 @@ export class SigninAccountView{
 
         this.#dialog.id = 'sign-up';
 
+/*
+This stying of close was taken help from AI only for the close button design thing.
+ */
         this.#dialog.innerHTML = `
-      <span id="error"></span><br />
-      <label for="username">Username</label>
-      <input type="text" id="username" />
-      <label for="password">Password</label>
-      <input type="text" id="password" />
-      <button> Create Account</button>
-       `
-        this.#dialog.querySelector('button')!.addEventListener('click',()  =>this.addAccount());
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span id="error"></span>
+            <button id="close-btn">close</button>
+          </div><br />
+        
+          <label for="username">Username</label>
+          <input type="text" id="username" />
+        
+          <label for="password">Password</label>
+          <input type="text" id="password" />
+        
+          <button id="button">Log In</button>
+        `;
+      //   this.#dialog.innerHTML = `
+      // <span id="error"></span><br />
+      // <label for="username">Username</label>
+      // <input type="text" id="username" />
+      // <label for="password">Password</label>
+      // <input type="text" id="password" />
+      // <button> Log In </button>
+      //  `
+        this.#dialog.querySelector('#button')!.addEventListener('click',()  =>this.addAccount());
+        this.#dialog.querySelector('#close-btn')!
+            .addEventListener('click', () => this.closeDialog());
 
         document.body.appendChild(this.#dialog)
         // dialogs are hidden by default, show yourself:
         this.#dialog.show();
 
+    }
+    open() {
+        this.#dialog.show();
+    }
+
+    closeDialog() {
+        this.#dialog.close();
     }
 
     async addAccount(){
@@ -35,9 +61,10 @@ export class SigninAccountView{
         let password = this.#dialog.querySelector<HTMLInputElement>("#password")!.value;
 
         try {
-            await this.#homePageController.signInUser(username, password);
+             const account = await this.#homePageController.signInUser(username, password);
             // assuming success, remove the dialog from the page
-            document.body.removeChild(this.#dialog)
+            this.#dialog.close();
+
         } catch (e: any) {
             // handle InvalidHPExceptions
             if (e instanceof InvalidUsernameException) {

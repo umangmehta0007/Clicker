@@ -1,36 +1,65 @@
 import Company from "../Model/Company.ts";
-import Upgrades from "../Model/Upgrades.ts";
 import CompanyView from "../View/CompanyView.ts";
-import UpgradesView from "../View/UpgradesView.ts";
+import PurchasablesView from "../View/PurchasablesView.ts";
+import UpgradeFactory from "../Model/UpgradesFactory.ts";
+import BuildingFactory from "../Model/BuildingFactory.ts";
 
-import Multiplier from "../Model/Multiplier.ts";
-import Addition from "../Model/Addition.ts";
 
 export default class CompanyController{
 
-    #additionBy: number;
-    #multiplicationBy: number;
     #company: Company;
     #companyView: CompanyView
-    #upgradeView: UpgradesView
+    #purchasables: PurchasablesView
+    #hasStarted: boolean;
 
     constructor(company: Company){
         this.#company = company;
         this.#companyView = new CompanyView(this.#company, this);
-        this.#upgradeView = new UpgradesView(this);
-        this.#additionBy = 5;
-        this.#multiplicationBy = 10;
+        this.#purchasables = new PurchasablesView(this);
+        this.#hasStarted = false;
     }
 
-    addGifts():void{
-        this.#company.addGifts();
+    addClick():void{
+        this.#company.addClick();
     }
-    buyEmployee():void{
-        const employee: Upgrades= new Addition(this.#additionBy);
-        this.#company.buyUpgrade(employee);
+
+    async buyAddition(){
+
+
+        const addition =  UpgradeFactory.create('ADDITION', this.#company);
+
+        await this.#company.buyUpgrade(addition);
     }
-    buyVan():void{
-        const van: Upgrades= new Multiplier(this.#multiplicationBy);
-        this.#company.buyUpgrade(van);
+    async buyMultiplier(){
+
+        const multiplier =  UpgradeFactory.create('MULTIPLIER', this.#company);
+
+        await this.#company.buyUpgrade(multiplier);
     }
+    async buySanta(){
+
+        const santa =  BuildingFactory.create('SANTA', this.#company);
+
+        await this.#company.buyBuildings(santa);
+    }
+    async buyAmazon(){
+
+        const amazon =  BuildingFactory.create('AMAZON', this.#company);
+
+        await this.#company.buyBuildings(amazon);
+    }
+
+
+    addEverySecond() {
+
+        if(!this.#hasStarted) {
+            setInterval(async () => {
+                await this.#company.addGifts();
+            }, 1000);
+
+            this.#hasStarted =true;
+        }
+
+    }
+
 }

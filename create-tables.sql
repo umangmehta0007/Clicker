@@ -9,7 +9,7 @@ create table if not exists account(
 -- company
 create table if not exists company(
     name varchar(255) not null unique,
-    totalGifts integer not null,
+    totalgifts integer not null,
     account varchar(255) not null,
     foreign key (account) references account(username)
     on delete cascade
@@ -21,7 +21,8 @@ create table if not exists company(
 -- Choosing each class and giving it a table as we have limited subclasses. (4 only)
 
 create table if not exists addition(
-    name varchar(255) unique not null,
+
+    id serial not null unique,
     price integer not null,
     clicks integer not null,
     company varchar(255) not null,
@@ -29,7 +30,8 @@ create table if not exists addition(
     );
 
 create table if not exists multiplier(
-    name varchar(255) unique not null,
+
+    id serial not null unique,
     price integer not null,
     clicks integer not null,
     company varchar(255) not null,
@@ -38,7 +40,8 @@ create table if not exists multiplier(
     );
 
 create table if not exists santa(
-    name varchar(255) unique not null,
+
+    id serial not null unique,
     price integer not null,
     cps integer not null,
     company varchar(255) not null,
@@ -49,7 +52,7 @@ create table if not exists santa(
 
 create table if not exists amazon(
 
-    name varchar(255) unique not null,
+    id serial not null unique,
     price integer not null,
     cps integer not null,
     company varchar(255) not null,
@@ -57,3 +60,24 @@ create table if not exists amazon(
     on delete cascade
 
     );
+
+create table if not exists inventory(
+
+    types varchar(255) unique not null,
+    price integer not null,
+    productionvalue integer not null
+);
+
+INSERT INTO inventory (price, productionValue, types)
+VALUES
+    (100,5,'AMAZON'),
+    (500,10,'SANTA'),
+    (100,5,'ADDITION'),
+    (500,5,'MULTIPLIER')
+    ON CONFLICT (types) DO NOTHING;
+
+
+
+
+
+

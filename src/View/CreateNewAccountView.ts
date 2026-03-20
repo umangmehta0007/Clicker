@@ -1,9 +1,6 @@
 import HomePageController from "../Controller/HomePageController.ts";
-import {InvalidPasswordException, InvalidUsernameException} from "../Model/Account.ts";
-import {InvalidNameException} from "../Model/Company.ts";
-
-
-
+import {DuplicateUsernameException, InvalidPasswordException, InvalidUsernameException} from "../Model/Account.ts";
+import {CompanyAlreadyExistsError, InvalidNameException} from "../Model/Company.ts";
 
 export class CreateNewAccountView{
 
@@ -18,26 +15,42 @@ export class CreateNewAccountView{
         this.#dialog.id = 'sign-up';
 
         this.#dialog.innerHTML = `
-      <span id="error"></span><br />
-      <label for="username">Username</label>
-      <input type="text" id="username" />
-      <label for="password">Password</label>
-      <input type="text" id="password" />
-      <label for="company">Company Name</label>
-      <input type="text" id="company" />
-      <button> Create Account</button>
-       `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span id="error"></span>
+            <button id="close-btn">✖</button>
+          </div><br />
+        
+          <label for="username">Username</label>
+          <input type="text" id="username" />
+        
+          <label for="password">Password</label>
+          <input type="text" id="password" />
+        
+          <label for="company">Company Name</label>
+          <input type="text" id="company" />
+        
+          <button id="signup">Create Account</button>
+        `;
 
-        this.#dialog.querySelector('button')!.addEventListener('click',()  =>this.addAccount());
+        this.#dialog.querySelector('#signup')!
+            .addEventListener('click', () => this.addAccount());
 
+        this.#dialog.querySelector('#close-btn')!
+            .addEventListener('click', () => this.closeDialog());
         document.body.appendChild(this.#dialog)
         // dialogs are hidden by default, show yourself:
         this.#dialog.show();
 
 
     }
+    open() {
+        this.#dialog.show();
+    }
+    closeDialog() {
+        this.#dialog.close();
+    }
 
-    addAccount(){
+    async addAccount(){
         let username = this.#dialog.querySelector<HTMLInputElement>("#username")!.value;
         let password = this.#dialog.querySelector<HTMLInputElement>("#password")!.value;
         let companyName = this.#dialog.querySelector<HTMLInputElement>("#company")!.value;
@@ -45,7 +58,8 @@ export class CreateNewAccountView{
 
 
         try {
-            this.#homePageController.createAccount(username, password, companyName);
+
+            await this.#homePageController.createAccount(username, password, companyName);
             // assuming success, remove the dialog from the page
             document.body.removeChild(this.#dialog)
         } catch (e: any) {
@@ -65,9 +79,20 @@ export class CreateNewAccountView{
                 this.#dialog.querySelector("#company")!
                     .setAttribute('style', 'border-color:red;');
                 this.#dialog.querySelector("#error")!
-                    .textContent = "Invalid passwords must have at least one letter (e.g., admin).";
+                    .textContent = "Invalid Company name must have at least one letter (e.g., admin).";
             }
-
+            else if(e instanceof CompanyAlreadyExistsError){
+                this.#dialog.querySelector("#company")!
+                    .setAttribute('style', 'border-color:red;');
+                this.#dialog.querySelector("#error")!
+                    .textContent = "Company already exists. Please choose a different name for the Company";
+            }
+            else if(e instanceof DuplicateUsernameException){
+                this.#dialog.querySelector("#username")!
+                    .setAttribute('style', 'border-color:red;');
+                this.#dialog.querySelector("#error")!
+                    .textContent = "Account already exists.Please choose a different username for the Account";
+            }
 
             else {
                 // unexpected errors can be logged so that we can add them to the

@@ -50,7 +50,7 @@ classDiagram
     class Upgrades{
         <<Abstract>>
 
-        -~string name
+        -~number id
         -number price
         -number clicks
         -Company company
@@ -67,7 +67,7 @@ classDiagram
     class Buildings{
         <<Abstract>>
         
-        -~string name
+        -~number id
         -number price
         -number cps
         -Company company

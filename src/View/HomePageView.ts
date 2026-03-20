@@ -9,8 +9,8 @@ export default class HomePageView{
 
         this.#homePageDiv = document.createElement("div");
         this.#homePageDiv.id = "home";
-        document.querySelector('#app')!.appendChild(this.#homePageDiv);
 
+        document.querySelector('#app')!.appendChild(this.#homePageDiv);
 
         this.#homePageDiv.innerHTML =
             "<button id = 'sign-in'> Sign In </button> " +

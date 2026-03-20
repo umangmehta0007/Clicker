@@ -25,17 +25,19 @@ export default class  CompanyView{
         this.#teamEl = document.querySelector('#company>ul')!;
         this.#internalState = document.createElement("div");
 
-        document.querySelector("#Gift-Button")!.addEventListener("click",(): void=>this.#companyController.addGifts())
+        document.querySelector("#Gift-Button")!.addEventListener("click",(): void=>this.#companyController.addClick())
 
     }
 
     notify(){
         this.#teamEl.replaceChildren();
 
-        this.#teamEl.innerHTML = `<strong>${'Total Gifts Delivered: '+this.#company.totalGifts()}</strong>`
+        this.#teamEl.innerHTML = `<strong>${'Total Gifts Delivered: '+this.#company.totalGifts}</strong>`
         this.#internalState.id = "sum";
-
-        this.#internalState.innerHTML = `<strong>${'Total Upgrades: '+this.#company.upgrades().length}</strong>`
+        this.#internalState.innerHTML = `
+        <strong>Total Upgrades: ${this.#company.upgrades.length}</strong><br>
+        <strong>Total Buildings: ${this.#company.buildings.length}</strong>
+        `;
 
         document.querySelector("#upgrades")!.append(this.#internalState);
     }

@@ -1,22 +1,13 @@
 ___
 # Gift Clicker
 ### Author: Umang Mehta (mehtau@myumanitoba.ca)
-### Date: January 14, 2026
+### Date: March 20, 2026
 ___
 
 # Overview
 
 Gift Clicker is an implementation of clicker games (also called "idle" or [incremental games](https://en.wikipedia.org/wiki/Incremental_game)) for COMP 2452.
 It is an event-driven program where each click corresponds to a successful gift delivery to our customer (like [Amazon](https://www.amazon.ca) or [FedEx](https://www.fedex.com/en-ca/home.html)).
-
-### AI DISCLOUSRE:
-
-*The Project was styled using css, and the code was generate by [chatGPT](https://en.wikipedia.org/wiki/ChatGPT)*
-
-
-ChatGPT was used solely for basic HTML/UI support, including the structure of the sign-in/sign-up dialogs, purchasable buttons (Addition, Multiplier, Santa, Amazon), and the close (✖) button design.
-
-All core logic, architecture, and implementation were completed independently.
 
 # Playing The Clicker Game: 
 
@@ -50,6 +41,19 @@ Expansion in Phase 2 was made by Adding buildings:
 
 **With Combination of upgrades and Buildings, gifts will be boosted.**
 
+## External Resources
+
+- [Web Crypto API (for password hashing)](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/deriveBits#pbkdf2)
+- [SQL transaction](https://www.geeksforgeeks.org/sql/sql-transactions/)
+- [Professor's Code for referencing Architecture](https://code.cs.umanitoba.ca/comp2452-winter2026/2452-emon/-/tree/main?ref_type=heads)
+
+### AI DISCLOSURE:
+
+*The Project was styled using css, and the code was generate by [chatGPT](https://en.wikipedia.org/wiki/ChatGPT)*
+
+* ChatGPT was used solely for basic HTML/UI support, including the structure of the sign-in/sign-up dialogs, purchasable buttons (Addition, Multiplier, Santa, Amazon), and the close (✖) button design.
+
+All core logic, architecture, and implementation were completed independently.
 
 # Running
 

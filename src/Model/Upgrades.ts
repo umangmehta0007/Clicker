@@ -2,7 +2,15 @@ import assert from "../assertions.ts";
 import type Company from "./Company.ts";
 import db from "./connection.ts";
 
+/**
+ * Represents an upgrade that improves gift generation.
+ *
+ * Upgrades increase how many gifts are earned either by adding extra
+ * gifts or multiplying the total. Each upgrade has a cost, a value,
+ * and belongs to a Company.
+ */
 export default abstract class Upgrades{
+
 
     id?: number;
     #clicks: number
@@ -35,7 +43,7 @@ export default abstract class Upgrades{
             const results = await db().query<{
                 id:number
             }>(`
-                INSERT INTO addition (id, price, clicks, company) Values (default, $1,$2,$3)
+                INSERT INTO addition (id, price, clicks, company) Values (default, $1,$2,$3) returning id
             `,[upgrade.#price, upgrade.#clicks, upgrade.#company.name]);
 
             results.rows.forEach((row) => {
@@ -48,7 +56,7 @@ export default abstract class Upgrades{
                 id:number
             }>(`
                 INSERT INTO multiplier (id, price, clicks, company) VALUES
-                    (default, $1,$2,$3)
+                    (default, $1,$2,$3) returning id
             `,[upgrade.#price, upgrade.#clicks, upgrade.#company.name]);
 
             results.rows.forEach((row) => {
@@ -58,7 +66,6 @@ export default abstract class Upgrades{
         }
 
     }
-
 
     static async getUpgradesForCompany(company: Company){
 
@@ -100,6 +107,29 @@ export default abstract class Upgrades{
         return dbUpgrades;
     }
 
+    static async getMultiplier() {
+        const results = await db().query<{
+            price:number,
+            productionvalue:number,
+            types:string
+        }>(`
+            SELECT * FROM inventory WHERE types = 'MULTIPLIER'
+        `);
+
+        return results.rows[0];
+    }
+
+    static async getAddition() {
+        const results = await db().query<{
+            price:number,
+            productionvalue:number,
+            types:string
+        }>(`
+        SELECT * FROM inventory WHERE types = 'ADDITION'
+    `);
+
+        return results.rows[0];
+    }
 }
 
 

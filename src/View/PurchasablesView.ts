@@ -32,10 +32,10 @@ export default class PurchasablesView {
         santaButton.id = "Santa";
         amazonButton.id = "Amazon";
 
-        additionButton.textContent = "Addition (5 clicks Per Click)"
-        vanButton.textContent = "Multiplier (10 clicks Per Click)"
-        santaButton.textContent = "Santa (5 cps)";
-        amazonButton.textContent = "Amazon (10 cps)";
+        additionButton.textContent = "Addition (5 clicks Per Click) Price: 100 Gifts"
+        vanButton.textContent = "Multiplier (10 clicks Per Click) Price: 500 Gifts"
+        santaButton.textContent = "Santa (5 cps) Price: 500 Gifts";
+        amazonButton.textContent = "Amazon (10 cps) Price: 100 Gifts";
 
         upgradesEl.appendChild(additionButton);
         upgradesEl.appendChild(vanButton);
@@ -77,6 +77,8 @@ export default class PurchasablesView {
              await this.#companyController.buyAddition();
 
         } catch (e) {
+
+            console.log("SOME ERROR");
 
             if (e instanceof NotEnoughGiftsException) {
                 this.#showError("Not enough gifts for Addition!");

@@ -6,6 +6,13 @@ import Buildings from "./Buildings.ts";
 import Account from "./Account.ts";
 import db from "./connection.ts";
 
+/**
+ * Represents a company in the game.
+ *
+ * A Company stores the total gifts and manages all upgrades and buildings.
+ * It handles buying items, generating gifts (manual by clicking and automatic per second), and
+ * saving/loading its state from the database.
+ */
 export default class Company{
 
     #name: string;
@@ -34,12 +41,23 @@ export default class Company{
         assert(this.#totalGifts>=0, "Gifts should always be greater than equal to zero");
         assert(this.#name.length >0, "Name should not be empty");
     }
+
+
+    registerListener(listener: Listener){
+
+        this.#listeners.push(listener);
+    }
     #notifyAll(){
         this.#listeners
             .forEach((l) => l.notify());
     }
 
 
+    /**
+     * Saves the current company data to the database.
+     *
+     * Stores total gifts, upgrades, and buildings.
+     */
     async #saveCompany(): Promise<Company> {
 
         await db().query(`
@@ -62,8 +80,14 @@ export default class Company{
 
         return this;
     }
-    static async createCompany(company:Company){
 
+    /**
+     * Creates a new company in the database.
+     *
+     * Used when a new account is created.
+     */
+    static async createCompany(company:Company){
+    //could have used upsert, but wasn't aware of it until the class on 19th March , lol!
         try{
             await db().query<{
                 name:string,
@@ -118,14 +142,16 @@ export default class Company{
         }
 
         this.#totalGifts -= u.price;
+
         this.#upgrades.push(u);
 
+
         await this.#saveCompany();
+        this.#notifyAll();
 
         /*
         This notifyAll here is just additonal part: I know it voilates mvp but this is just for visual purposes
         */
-        this.#notifyAll();
     }
 
     async buyBuildings(b:Buildings){
@@ -144,7 +170,12 @@ export default class Company{
     }
 
 
-
+    /**
+     * Loads the company for a given account.
+     *
+     * @param account the account whose company we want
+     * @return the company linked to the account
+     */
     static async getCompanyForAccount(account: Account):Promise<Company>{
 
         const results = await db().query<{
@@ -161,7 +192,7 @@ export default class Company{
         dbCompany.#totalGifts = results.rows[0].totalgifts;
 
 
-        dbCompany.#upgrades = await Upgrades.getUpgradesForCompany(dbCompany);
+       dbCompany.#upgrades = await Upgrades.getUpgradesForCompany(dbCompany);
         dbCompany.#buildings = await Buildings.getBuildingsForCompany(dbCompany);
 
         return dbCompany;
@@ -212,6 +243,9 @@ export default class Company{
         return cps;
     }
 
+    /**
+     * Adds one gift when user clicks.Also gets modified based on upgrades you have.
+     */
     async addClick() {
 
         const addition = this.#clicksFromAddition();
@@ -226,6 +260,9 @@ export default class Company{
         this.#notifyAll();
     }
 
+    /**
+     * Adds gifts automatically based on buildings and upgrades.
+     */
     async addGifts() {
 
         const buildingCps = this.#cpsFromBuildings();
@@ -245,16 +282,6 @@ export default class Company{
         await this.#saveCompany();
         this.#notifyAll();
     }
-    /*
-    Adding listeners to this Company
-     */
-
-    registerListener(listener: Listener){
-
-        this.#listeners.push(listener);
-    }
-
-
 
 }
 

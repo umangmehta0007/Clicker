@@ -46,13 +46,11 @@ flowchart
         
     hs[[GAME SCREEN]]
     clicked{Process Gift Click}
-    lg{Log out}
+  
     
     hs == Gift Button ==> clicked
-    hs == Logout Button ==> lg
 
     clicked -.Gift Successfully Delivered.->hs
-    lg -.Signing Out to Home Screen.->hs
 
 
 

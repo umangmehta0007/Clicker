@@ -7,6 +7,13 @@ import {SigninAccountView} from "../View/SigninAccountView.ts";
 import CompanyController from "./CompanyController.ts";
 import Company from "../Model/Company.ts";
 
+/**
+ * Controller for the home page of the Game.
+ *
+ * Handles user actions like signing in and signing up, and connects
+ * the views with the model. It creates accounts, loads user data,
+ * and initializes the company after login.
+ */
 export default class HomePageController{
 
     #homePageView: HomePageView;
@@ -19,6 +26,11 @@ export default class HomePageController{
     }
 
 
+    /**
+     * Opens the sign-in view.
+     *
+     * Creates the sign-in dialog if it does not exist, otherwise reopens it.
+     */
     signIn():void{
 
 
@@ -32,6 +44,12 @@ export default class HomePageController{
 
     }
 
+    /**
+     * Opens the sign-up view.
+     *
+     * Creates the sign-up dialog if it does not exist, otherwise reopens it.
+     */
+
     signUp():void{
 
         if(this.#newAccount === undefined) {
@@ -40,6 +58,16 @@ export default class HomePageController{
             this.#newAccount.open();
         }
     }
+
+    /**
+     * Signs in a user.
+     *
+     * Checks the account in the database and, if valid, loads the user's
+     * company and starts automatic gift generation.
+     *
+     * @param username the entered username
+     * @param password the entered password
+     */
 
     async signInUser(username: string, password: string){
 
@@ -56,6 +84,16 @@ export default class HomePageController{
         this.#companyController.addEverySecond();
     }
 
+    /**
+     * Creates a new account and company.
+     *
+     * Saves the account and its company to the database, then closes
+     * the sign-up view.
+     *
+     * @param username the new username
+     * @param password the new password
+     * @param companyName the name of the company
+     */
     async createAccount(username:string, password:string, companyName:string){
 
         /*
@@ -68,10 +106,9 @@ export default class HomePageController{
 
         await Account.saveAccount(account, company);
 
+        await Company.createCompany(company);
+
         this.#newAccount = undefined;
     }
 
-    /*
-    Need only derived bits, not the derived key as we were just storing data in the db, and need not any encrption.
-     */
 }

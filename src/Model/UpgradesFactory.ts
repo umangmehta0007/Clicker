@@ -1,26 +1,26 @@
-import Inventory from "./Inventory.ts";
-import Company from "./Company.ts";
-import Upgrades, { Addition, Multiplier } from "./Upgrades.ts";
 
-export default class UpgradeFactory {
+import type Company from "./Company.ts";
+import {Addition, Multiplier} from "./Upgrades.ts";
 
-    static create(type: string, company: Company): Upgrades {
+export default class UpgradesFactory {
 
-        const data = Inventory.get(type);
+    static create(data:any, company: Company) {
 
-        if (type === "ADDITION") {
-            return new Addition(
-                data!.productionvalue,
-                data!.price,
+        let upgrade;
+
+        if (data.types === "ADDITION") {
+            upgrade = new Addition(
+                data.productionvalue,
+                data.price,
                 company
             );
-        }else {
-            return new Multiplier(
-                data!.productionvalue,
-                data!.price,
+        } else{
+            upgrade = new Multiplier(
+                data.productionvalue,
+                data.price,
                 company
             );
         }
-
+        return upgrade;
     }
 }

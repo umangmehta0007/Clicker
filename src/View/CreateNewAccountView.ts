@@ -2,6 +2,14 @@ import HomePageController from "../Controller/HomePageController.ts";
 import {DuplicateUsernameException, InvalidPasswordException, InvalidUsernameException} from "../Model/Account.ts";
 import {CompanyAlreadyExistsError, InvalidNameException} from "../Model/Company.ts";
 
+
+/**
+ * View for creating a new account.
+ *
+ * Displays a dialog where the user can enter username, password,
+ * and company name. It sends the input to the HomePageController
+ * and shows errors if validation fails.
+ */
 export class CreateNewAccountView{
 
     #homePageController: HomePageController;
@@ -43,6 +51,9 @@ export class CreateNewAccountView{
 
 
     }
+    /**
+     * Opens the sign-up dialog.
+     */
     open() {
         this.#dialog.show();
     }
@@ -50,6 +61,12 @@ export class CreateNewAccountView{
         this.#dialog.close();
     }
 
+    /**
+     * Creates a new account from user input.
+     *
+     * Reads values from the dialog, sends them to the controller,
+     * and shows errors if creation fails.
+     */
     async addAccount(){
         let username = this.#dialog.querySelector<HTMLInputElement>("#username")!.value;
         let password = this.#dialog.querySelector<HTMLInputElement>("#password")!.value;

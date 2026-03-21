@@ -2,6 +2,12 @@ import assert from "../assertions.ts";
 import Company from "./Company.ts";
 import db from "./connection.ts";
 
+/**
+ * Represents a building that generates gifts over time.
+ *
+ * Buildings produce gifts automatically (CPS - clicks per second).
+ * Each building has a cost and a production value, and belongs to a Company.
+ */
 export default abstract class Buildings{
 
     id?: number;
@@ -36,12 +42,12 @@ export default abstract class Buildings{
                 id:number
             }>(`
                 INSERT INTO santa (id, price, cps, company) VALUES
-                    (default, $1,$2,$3)
+                    (default, $1,$2,$3) returning id
             `,[building.#price, building.#cps, building.#company.name]);
 
             results.rows.forEach((row) => {
                 building.id = row['id']
-                console.log(`Building got ID ${building.id}`)
+                console.log(`Santa got ID ${building.id}`)
             })
         }
         else{
@@ -49,12 +55,12 @@ export default abstract class Buildings{
                 id:number
             }>(`
                 INSERT INTO amazon (id, price, cps, company) VALUES
-                    (default, $1,$2,$3)
+                    (default, $1,$2,$3) returning id
             `,[building.#price, building.#cps, building.#company.name]);
 
             results.rows.forEach((row) => {
                 building.id = row['id']
-                console.log(`Upgrade got ID ${building.id}`)
+                console.log(`Amazon got ID ${building.id}`)
             })
         }
     }
@@ -101,6 +107,45 @@ export default abstract class Buildings{
 
 
         return dbBuildings;
+    }
+
+    /**
+     * Gets the Santa building data from the inventory.
+     *
+     * Loads the price and production value for Santa from the database.
+     *
+     * @return the instance of Santa .
+     */
+    static async getSanta() {
+        const results = await db().query<{
+            productionvalue:number,
+            price:number,
+            types:string
+        }>(`
+        SELECT * FROM inventory WHERE types = 'SANTA'
+    `);
+
+        return results.rows[0];
+    }
+
+
+    /**
+    * Gets the Amazon building data from the inventory.
+    *
+    * Loads the price and production value for Amazon from the database.
+    *
+    * @return the instance of Amazon .
+    */
+    static async getAmazon() {
+        const results = await db().query<{
+            productionvalue:number,
+            price:number,
+            types:string
+        }>(`
+        SELECT * FROM inventory WHERE types = 'AMAZON'
+    `);
+
+        return results.rows[0];
     }
 
 }

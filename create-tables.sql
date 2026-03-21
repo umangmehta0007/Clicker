@@ -68,7 +68,7 @@ create table if not exists inventory(
     productionvalue integer not null
 );
 
-INSERT INTO inventory (price, productionValue, types)
+INSERT INTO inventory (price, productionvalue, types)
 VALUES
     (100,5,'AMAZON'),
     (500,10,'SANTA'),

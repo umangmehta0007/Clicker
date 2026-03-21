@@ -4,6 +4,13 @@ import db from "./connection.ts";
 import {getHasher} from "./ConnectionForHashing.ts";
 import type Hashing from "./Hashing.ts";
 
+/**
+ * Represents a user account in the system.
+ *
+ * An Account stores the username and password (hashed) and is used for
+ * authentication (sign in and sign up). Each account is associated with
+ * one Company.
+ */
 export default class Account{
     #username:string
     #password:string
@@ -65,7 +72,7 @@ export default class Account{
     static async saveAccount(account: Account, company:Company) {
 
         try {
-            await db().exec("BEGIN")
+            // await db().exec("BEGIN")
 
             account.#company = company;
 
@@ -87,13 +94,13 @@ export default class Account{
             /*
             Need await statement here as it throws error, and any to catch async error needs to have await.
              */
-            await Company.createCompany(company);
+            // await Company.createCompany(company);
 
-            await db().exec("COMMIT")
+            // await db().exec("COMMIT")
 
         } catch (e: any) {
 
-            await db().exec("ROLLBACK");
+            // await db().exec("ROLLBACK");
 
             if (e.code === '23505') {
                 throw new DuplicateUsernameException();

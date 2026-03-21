@@ -2,6 +2,12 @@ import HomePageController from "../Controller/HomePageController.ts";
 
 import {InvalidUsernameException, InvalidPasswordException, InvalidCredentialsExceptions} from "../Model/Account";
 
+/**
+ * View for signing in a user.
+ *
+ * Displays a dialog for username and password, sends the input to the
+ * HomePageController, and shows errors if login fails.
+ */
 export class SigninAccountView{
 
     #homePageController: HomePageController;
@@ -56,6 +62,12 @@ This stying of close was taken help from AI only for the close button design thi
         this.#dialog.close();
     }
 
+    /**
+     * Attempts to sign in the user.
+     *
+     * Reads username and password from the dialog, sends them to the controller,
+     * and handles errors by showing messages on the screen.
+     */
     async addAccount(){
         let username = this.#dialog.querySelector<HTMLInputElement>("#username")!.value;
         let password = this.#dialog.querySelector<HTMLInputElement>("#password")!.value;

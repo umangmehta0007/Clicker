@@ -18,8 +18,11 @@ classDiagram
         -~ string username
         - string password
         - Company company
-    }
         
+        +loadAccount(account:Account) Promise<list<Account>>
+        +saveAccount(account: Account, company:Company) Promise<void>
+        
+    }
         note for Company "Invariant Properties
              <ul> 
                 <li> totalGifts >= 0
@@ -32,10 +35,19 @@ classDiagram
         - list~Purchasable~ purchases
         - Account account
         
-        +buypurchasable(Purchasable u) void
-        +addGiftsClicker() void
-        +addGiftsAuto()void
-        -calculateProduction() Array<number>
+        -saveCompany(): Promise<Company>
+        -clicksFromAddition():number
+        -clicksFromMultiplication():number
+        -cpsFromBuildings(): number
+
+        +createCompany(company:Company):Promise<Company>
+        +getCompanyForAccount(account: Account):Promise<Company>
+
+        +buyUpgrade(u:Upgrades)
+        +buyBuildings(b:Buildings)
+
+        +addClick():void
+        +addGifts(): void
         
     }
 
@@ -54,6 +66,10 @@ classDiagram
         -number price
         -number clicks
         -Company company
+        
+        +saveUpgrades(upgrade:Upgrades): void
+        +getUpgradesForCompany(company: Company): Promise<list(Upgrades)>
+        
     }
 
     note for Buildings "Invariant Properties
@@ -71,6 +87,10 @@ classDiagram
         -number price
         -number cps
         -Company company
+
+        +saveBuildings(building:Buildings): void
+        +getBuildingsForCompany(company: Company): Promise<list(Buildings)>
+
     }
 
     note for Addition "Invariant Properties
@@ -112,30 +132,25 @@ classDiagram
     Amazon--|>Buildings
     
 ```
-### Modifications for Phase 2 Design: 
-Modifications for Phase 2 Design:
-* Renamed `Employee` and `Van` classes to `Addition` and `Multiplier`.
-* Upgrades now affect both manual clicking and building production.
-* Added an `Account` class to handle login and connect each user to one `Company` and `flows.md` was updated accordingly.
-* Usernames are unique (natural keys), so I added a unique constraint.
-* Enforced that `Company` name and `Purchasables` name must also be unique to prevent duplicate identities.
-* Defined a one-to-one relationship between `Account` and `Company`, I could have merged username and password within company but that looked SRP violation to me. 
-* Introduced a `Purchasable` superclass to represent both upgrades and buildings.
-* Since building and upgrades had same properties they came under same hierarchy (name, price, productionValue) into Purchasable.
-* Removed separate variables like gifts_per_click and cps and replaced them with a single productionValue.
-* Kept `Company` as the owner of multiple Purchasable objects (one-to-many relationship).
-* Updated invariants to ensure `price >= 1` and `productionValue >= 1`.
-
-Also understood that in phase 1, they were specifically talking about `increase the power of clicking` not the number of `gifts_per_click`.
-
-**Moving to design of this, power of clicking will be defined by following and will be done sequentially:** 
-*       Additon class - which will add to power of clicking add 5 clicks
-*       Multiplier class - which will multiply my power of clicking by 10 times. 
-* Building would jsut be giving clicks per second and if we have bought upgrades, it would increase this power in sequence of which upgrades were added. 
+### Modifications for Phase 2 Implementation: 
+Modifications for Phase 2 Implementation:
+* Added database support so Accounts, Companies, Upgrades, and Buildings can be saved and loaded 
+* Gave Upgrades and Buildings an id and fixed saving so they don’t get duplicated 
+* Kept Company linked to Account 1-1 Relation and made Company hold its 1 to many relationship with upgrades and buildings	
+* Used Factory classes to create upgrades and buildings instead of creating them directly.
+* Added an inventory system to load default upgrades and buildings	
+* Implemented game logic for clicks and automatic gift generation using buildings and upgrades
 
 
 ### New Methods in `Company`
 
-* `calculateProduction()` - This method calculates and return an array of number of number of clicks by upgrades and number of clicks by buildings looping over the `purchases`.
-* `addGiftsClicker() void` - this method uses `calculateProduction()` to get number of gifts produced by manual clicking and adding them to `totalGifts`.
-* `addGiftsAuto()void` - This method would run by `setInterval` and get uses `calculateProduction()` to get number of total gifts produced per second by buildings with upgrades.
+* `saveCompany()` - saves the current company state (gifts, upgrades, buildings) to the database
+* `createCompany()` – creates a new company entry in the database
+* `getCompanyForAccount()` – loads a company associated with a given account
+
+* `addClick()` – adds gifts manually when user clicks 
+* `addGifts()` – adds gifts automatically based on buildings and upgrades
+
+* `clicksFromAddition()` – calculates extra gifts from addition upgrades 
+* `clicksFromMultiplication()` – calculates multiplier effect from upgrades 
+* `cpsFromBuildings()` – calculates gifts per second from buildings

@@ -3,7 +3,6 @@ ___
 ### Author: Umang Mehta (mehtau@myumanitoba.ca)
 ### Date: March 20, 2026
 ___
-
 # Overview
 
 Gift Clicker is an implementation of clicker games (also called "idle" or [incremental games](https://en.wikipedia.org/wiki/Incremental_game)) for COMP 2452.

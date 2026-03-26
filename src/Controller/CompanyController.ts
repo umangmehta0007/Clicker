@@ -12,13 +12,10 @@ export default class CompanyController{
     #company: Company;
     #companyView: CompanyView
     #purchasables: PurchasablesView
-    #hasStarted: boolean;
-
     constructor(company: Company){
         this.#company = company;
         this.#companyView = new CompanyView(this.#company, this);
         this.#purchasables = new PurchasablesView(this);
-        this.#hasStarted = false;
     }
 
     addClick():void{
@@ -65,22 +62,10 @@ export default class CompanyController{
         await this.#company.buyBuildings(amazon);
     }
 
-
     /**
      * Starts automatic gift generation for the company.
      *
      * Calls addGifts every second to update total gifts over time.
      */
-    addEverySecond() {
-
-        if(!this.#hasStarted) {
-            setInterval(async () => {
-                await this.#company.addGifts();
-            }, 1000);
-
-            this.#hasStarted =true;
-        }
-
-    }
 
 }

@@ -10,10 +10,13 @@ export default class  CompanyView{
     This internalState just additonal part: I know it voilates mvp but this is just for visual purposes
      */
     #internalState!: HTMLDivElement
+    #hasStarted: boolean;
 
     constructor(company: Company,companyController: CompanyController ){
 
         this.#company = company;
+        this.#hasStarted = false;
+
         this.#companyController = companyController;
         this.#company.registerListener(this);
         document.querySelector('#app')!.innerHTML =
@@ -27,6 +30,20 @@ export default class  CompanyView{
 
         document.querySelector("#Gift-Button")!.addEventListener("click",(): void=>this.#companyController.addClick())
 
+        /*
+        this method was invoked here based on feedback, as the view is responsible for faking user clicking, which we get from user.
+         */
+        this.addEverySecond();
+    }
+
+    addEverySecond() {
+        if(!this.#hasStarted) {
+            setInterval(async () => {
+                await this.#company.addGifts();
+            }, 1000);
+
+            this.#hasStarted =true;
+        }
     }
 
     notify(){

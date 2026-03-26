@@ -30,7 +30,6 @@ export default class Account{
         this.#checkAccount();
 
     }
-
     /*
     Validation has been done at this stage for the pair of username and password:
      */
@@ -72,7 +71,6 @@ export default class Account{
     static async saveAccount(account: Account, company:Company) {
 
         try {
-            // await db().exec("BEGIN")
 
             account.#company = company;
 

@@ -109,6 +109,7 @@ export default abstract class Upgrades{
 
     static async getMultiplier() {
         const results = await db().query<{
+            id:number,
             price:number,
             productionvalue:number,
             types:string
@@ -121,13 +122,13 @@ export default abstract class Upgrades{
 
     static async getAddition() {
         const results = await db().query<{
+            id: number,
             price:number,
             productionvalue:number,
             types:string
         }>(`
         SELECT * FROM inventory WHERE types = 'ADDITION'
     `);
-
         return results.rows[0];
     }
 }

@@ -63,10 +63,18 @@ create table if not exists amazon(
 
 create table if not exists inventory(
 
-    types varchar(255) unique not null,
+    id serial unique not null,
+    types varchar(255) not null,
     price integer not null,
     productionvalue integer not null
 );
+
+-- INSERT INTO inventory (price, productionvalue, types)
+-- VALUES
+--     (100,5,'AMAZON'),
+--     (500,10,'SANTA'),
+--     (100,5,'ADDITION'),
+--     (500,5,'MULTIPLIER');
 
 insert into inventory (price, productionvalue, types) values
 --Buildings (new 5 added total 7)

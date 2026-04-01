@@ -1,6 +1,6 @@
 import HomePageController from "./Controller/HomePageController.ts";
 import ddl from '../create-tables.sql?raw'
-import csv from 'src/model.csv?raw'
+import csv from './model.csv?raw'
 import db from './Model/connection.ts'
 // load the tables into the database:
 

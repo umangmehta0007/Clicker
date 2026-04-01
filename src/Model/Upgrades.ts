@@ -107,29 +107,17 @@ export default abstract class Upgrades{
         return dbUpgrades;
     }
 
-    static async getMultiplier() {
-        const results = await db().query<{
-            id:number,
-            price:number,
-            productionvalue:number,
-            types:string
-        }>(`
-            SELECT * FROM inventory WHERE types = 'MULTIPLIER'
-        `);
-
-        return results.rows[0];
-    }
-
-    static async getAddition() {
+    static async getUpgrades() {
         const results = await db().query<{
             id: number,
             price:number,
             productionvalue:number,
             types:string
         }>(`
-        SELECT * FROM inventory WHERE types = 'ADDITION'
-    `);
-        return results.rows[0];
+            SELECT * FROM inventory
+            WHERE types = 'ADDITION' OR types = 'MULTIPLIER'
+            `);
+        return results.rows;
     }
 }
 

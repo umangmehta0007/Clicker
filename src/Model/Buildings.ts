@@ -109,43 +109,17 @@ export default abstract class Buildings{
         return dbBuildings;
     }
 
-    /**
-     * Gets the Santa building data from the inventory.
-     *
-     * Loads the price and production value for Santa from the database.
-     *
-     * @return the instance of Santa .
-     */
-    static async getSanta() {
+    static async getBuildings() {
         const results = await db().query<{
-            productionvalue:number,
+            id: number,
             price:number,
+            productionvalue:number,
             types:string
         }>(`
-        SELECT * FROM inventory WHERE types = 'SANTA'
-    `);
-
-        return results.rows[0];
-    }
-
-
-    /**
-    * Gets the Amazon building data from the inventory.
-    *
-    * Loads the price and production value for Amazon from the database.
-    *
-    * @return the instance of Amazon .
-    */
-    static async getAmazon() {
-        const results = await db().query<{
-            productionvalue:number,
-            price:number,
-            types:string
-        }>(`
-        SELECT * FROM inventory WHERE types = 'AMAZON'
-    `);
-
-        return results.rows[0];
+            SELECT * FROM inventory
+            WHERE types = 'AMAZON' OR types = 'SANTA'
+        `);
+        return results.rows;
     }
 
 }

@@ -12,13 +12,29 @@ export default class CompanyController{
     #company: Company;
     #companyView: CompanyView
     #purchasables: PurchasablesView
-    #hasStarted: boolean;
+    #upgrades:any;
+    #buildings:any;
 
     constructor(company: Company){
+
         this.#company = company;
-        this.#companyView = new CompanyView(this.#company, this);
-        this.#purchasables = new PurchasablesView(this);
-        this.#hasStarted = false;
+
+        Upgrades.getUpgrades().then(upgrades => {
+            this.#upgrades = upgrades;
+
+            Buildings.getBuildings().then(buildings => {
+                this.#buildings = buildings;
+                this.#companyView = new CompanyView(this.#company, this);
+                this.#purchasables = new PurchasablesView(this);
+            });
+        });
+    }
+
+    get upgrades():any{
+        return this.#upgrades;
+    }
+    get buildings():any{
+        return this.#buildings;
     }
 
     addClick():void{
@@ -32,38 +48,25 @@ export default class CompanyController{
      * Loads item data from the database, creates the correct object using
      * a factory, and then adds it to the company after deducting gifts.
      */
-    async buyAddition(){
+    async buyUpgrade(position:number){
 
-        const additionInventory = await Upgrades.getAddition();
+        console.log(position);
+        const inventory = this.#upgrades[position];
+        const upgrade = UpgradesFactory.create(inventory, this.#company);
 
-        const addition = UpgradesFactory.create(additionInventory, this.#company);
-
-        await this.#company.buyUpgrade(addition);
+        await this.#company.buyUpgrade(upgrade);
     }
-    async buyMultiplier(){
 
-        const data = await Upgrades.getMultiplier();
 
-        const multiplier = UpgradesFactory.create(data, this.#company);
+    async buyBuilding(position:number){
 
-        await this.#company.buyUpgrade(multiplier);
+        const inventory = this.#buildings[position];
+
+        const building = BuildingFactory.create(inventory, this.#company);
+
+        await this.#company.buyBuildings(building);
     }
-    async buySanta(){
 
-        const data = await Buildings.getSanta();
-
-        const santa = BuildingFactory.create(data, this.#company);
-
-        await this.#company.buyBuildings(santa);
-    }
-    async buyAmazon(){
-
-        const data = await Buildings.getAmazon();
-
-        const amazon = BuildingFactory.create(data, this.#company);
-
-        await this.#company.buyBuildings(amazon);
-    }
 
 
     /**
@@ -71,16 +74,5 @@ export default class CompanyController{
      *
      * Calls addGifts every second to update total gifts over time.
      */
-    addEverySecond() {
-
-        if(!this.#hasStarted) {
-            setInterval(async () => {
-                await this.#company.addGifts();
-            }, 1000);
-
-            this.#hasStarted =true;
-        }
-
-    }
 
 }

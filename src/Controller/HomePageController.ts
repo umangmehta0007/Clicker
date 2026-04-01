@@ -81,7 +81,6 @@ export default class HomePageController{
         this.#signInAccount= undefined;
 
         this.#companyController = new CompanyController(dbAccount.company);
-        this.#companyController.addEverySecond();
     }
 
     /**

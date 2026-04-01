@@ -7,51 +7,78 @@ export default class PurchasablesView {
 
     #companyEL: HTMLDivElement;
     #companyController: CompanyController;
+    #upgrades:any;
+    #buildings:any;
 
     constructor(companyController: CompanyController){
 
         this.#companyEL = document.querySelector("#company")!;
         this.#companyController =  companyController;
-        
+        this.#upgrades = this.#companyController.upgrades;
+        this.#buildings = this.#companyController.buildings;
+
         /*
         Creating and Adding button to the Index.html
         */
 
         const upgradesEl = document.createElement("div");
         upgradesEl.id = "upgrades";
-        this.#companyEL.append(upgradesEl);
+        upgradesEl.innerHTML = "<h3>Upgrades</h3>";
 
-        let additionButton = document.createElement('button');
-        let vanButton  = document.createElement('button');
+        const buildingsEl = document.createElement("div");
+        buildingsEl.id = "buildings";
+        buildingsEl.innerHTML = "<h3>Buildings</h3>";
 
-        let santaButton = document.createElement('button');
-        let amazonButton = document.createElement('button');
+        const container = document.createElement("div");
+        container.id = "purchasables";
 
-        additionButton.id = "Addition";
-        vanButton.id = "Multiplier";
-        santaButton.id = "Santa";
-        amazonButton.id = "Amazon";
+        container.append(upgradesEl, buildingsEl);
+        this.#companyEL.append(container);
+        // this.#companyEL.append(upgradesEl, buildingsEl);
+        let i = 0;
 
-        additionButton.textContent = "Addition (5 clicks Per Click) Price: 100 Gifts"
-        vanButton.textContent = "Multiplier (10 clicks Per Click) Price: 500 Gifts"
-        santaButton.textContent = "Santa (5 cps) Price: 500 Gifts";
-        amazonButton.textContent = "Amazon (10 cps) Price: 100 Gifts";
 
-        upgradesEl.appendChild(additionButton);
-        upgradesEl.appendChild(vanButton);
-        upgradesEl.appendChild(santaButton);
-        upgradesEl.appendChild(amazonButton);
+        for(let row of this.#upgrades){
+            let upgrades = document.createElement('button');
+            upgrades.id = "Addition "+i;
 
-        /*
-        Successfully added the button
-         */
+            let index = i;
 
-        additionButton.addEventListener("click",()=>this.buyAddition());
-        vanButton.addEventListener("click",()=>this.buyMultiplier());
+            if(row.types == 'ADDITION'){
+                upgrades.textContent = "Addition "+row.productionvalue+"(Per Click) Price: "+row.price+" Gifts";
+            }else{
+                upgrades.textContent = "Multiplication "+row.productionvalue+"(Per Click) Price: "+row.price+" Gifts";
+            }
 
-        santaButton.addEventListener("click", () => this.buySanta());
-        amazonButton.addEventListener("click", () => this.buyAmazon());
+            upgrades.addEventListener("click", () => {
+                this.buyUpgrade(index);
+            });
+            upgradesEl.appendChild(upgrades);
 
+            i++;
+        }
+
+        let j = 0;
+        for(let row of this.#buildings){
+
+            let index = j;
+
+            let buildingButtons = document.createElement('button');
+            buildingButtons.id = "Building "+ j;
+
+            if(row.types == 'SANTA'){
+                buildingButtons.textContent = "SANTA "+row.productionvalue+"Cps Price: "+row.price+" Gifts";
+            }else{
+                buildingButtons.textContent = "AMAZON "+row.productionvalue+"Cps Price: "+row.price+" Gifts";
+            }
+            buildingButtons.addEventListener("click", () => {
+                this.buyBuilding(index);
+            });
+
+            buildingsEl.appendChild(buildingButtons);
+            j++;
+        }
+        
     }
 
     /*
@@ -71,45 +98,31 @@ export default class PurchasablesView {
         errorEl.textContent = message;
     }
 
-    async buyAddition() {
+    async buyUpgrade(position:number) {
         try {
-
-             await this.#companyController.buyAddition();
+             await this.#companyController.buyUpgrade(position);
 
         } catch (e) {
 
             console.log("SOME ERROR");
 
             if (e instanceof NotEnoughGiftsException) {
-                this.#showError("Not enough gifts for Addition!");
+                this.#showError("Not enough gifts to Buy Upgrade!");
             }
         }
     }
-    async buyMultiplier() {
+    async buyBuilding(position:number) {
         try {
-            await this.#companyController.buyMultiplier();
+            await this.#companyController.buyBuilding(position);
+
         } catch (e) {
+
+            console.log("SOME ERROR");
+
             if (e instanceof NotEnoughGiftsException) {
-                this.#showError("Not enough gifts for Multiplier!");
+                this.#showError("Not enough gifts to Buy Building!");
             }
         }
     }
-    async buySanta() {
-        try {
-            await this.#companyController.buySanta();
-        } catch (e) {
-            if (e instanceof NotEnoughGiftsException) {
-                this.#showError("Not enough gifts for Santa!");
-            }
-        }
-    }
-    async buyAmazon() {
-        try {
-            await this.#companyController.buyAmazon();
-        } catch (e) {
-            if (e instanceof NotEnoughGiftsException) {
-                this.#showError("Not enough gifts for Amazon!");
-            }
-        }
-    }
+
 }

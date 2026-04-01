@@ -6,6 +6,8 @@ export default class  CompanyView{
     #company: Company;
     #teamEl: HTMLUListElement;
     #companyController: CompanyController;
+    #hasStarted: boolean;
+
     /*
     This internalState just additonal part: I know it voilates mvp but this is just for visual purposes
      */
@@ -15,6 +17,7 @@ export default class  CompanyView{
 
         this.#company = company;
         this.#companyController = companyController;
+        this.#hasStarted = false;
         this.#company.registerListener(this);
         document.querySelector('#app')!.innerHTML =
             "<div id = 'company' >" +
@@ -26,7 +29,17 @@ export default class  CompanyView{
         this.#internalState = document.createElement("div");
 
         document.querySelector("#Gift-Button")!.addEventListener("click",(): void=>this.#companyController.addClick())
+        this.addEverySecond();
+    }
 
+    addEverySecond() {
+        if(!this.#hasStarted) {
+            setInterval(async () => {
+                await this.#company.addGifts();
+            }, 1000);
+
+            this.#hasStarted =true;
+        }
     }
 
     notify(){

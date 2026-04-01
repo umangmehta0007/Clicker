@@ -152,9 +152,7 @@ ul {
 
 body:has(#Gift-Button:active)::after {
     content:
-            "🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁\A"
-            "🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁\A"
-            "🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁 🎁";
+            "🎁";
     white-space: pre;
     position: fixed;
     inset: 0;

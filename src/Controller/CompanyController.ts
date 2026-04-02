@@ -1,10 +1,9 @@
 import Company from "../Model/Company.ts";
 import CompanyView from "../View/CompanyView.ts";
 import PurchasablesView from "../View/PurchasablesView.ts";
-import BuildingFactory from "../Model/BuildingFactory.ts";
 import Upgrades from "../Model/Upgrades.ts";
-import UpgradesFactory from "../Model/UpgradesFactory.ts";
 import Buildings from "../Model/Buildings.ts";
+import PurchasableFactory from "../Model/PurchasableFactory.ts";
 
 
 export default class CompanyController{
@@ -52,9 +51,11 @@ export default class CompanyController{
 
         console.log(position);
         const inventory = this.#upgrades[position];
-        const upgrade = UpgradesFactory.create(inventory, this.#company);
+        const upgrade = PurchasableFactory.create(inventory, this.#company);
 
-        await this.#company.buyUpgrade(upgrade,position);
+        if (upgrade instanceof Upgrades) {
+            await this.#company.buyUpgrade(upgrade, position);
+        }
     }
 
 
@@ -62,9 +63,11 @@ export default class CompanyController{
 
         const inventory = this.#buildings[position];
 
-        const building = BuildingFactory.create(inventory, this.#company);
+        const building = PurchasableFactory.create(inventory, this.#company);
 
-        await this.#company.buyBuildings(building,position);
+        if (building instanceof Buildings) {
+            await this.#company.buyBuildings(building,position);
+        }
     }
 
     toggleAutoBuy(isOn:boolean){
@@ -81,23 +84,21 @@ export default class CompanyController{
         return success;
     }
 
-    enableMarkov(){
-
-    }
-
     /*
     As per the ddl the indecies from 0-4 are the Buildings and 5-9 are the upgrades
      */
+
+    /*
+    this autobuy is a little fishy, as it has some logic, need to check with franklin for this.
+    Also, if I give this responsibiity to the company itself, I would need an inventory in there.
+     */
     autoBuy(){
         let startingIndexOfUpgrades: number =5;
-        console.log("check1");
 
         if(this.#company.markovEnabled){
-            console.log("check2");
 
             const newPurchase = this.#company.roboBuy();
 
-           console.log(newPurchase);
            if(newPurchase >=startingIndexOfUpgrades){
                this.buyUpgrade(newPurchase-startingIndexOfUpgrades);
            }else{

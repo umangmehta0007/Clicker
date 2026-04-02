@@ -52,6 +52,7 @@ export default class  CompanyView{
 
         /*
         Ask professor if this autoBuying should be initilized in here or inside the model itself
+        Or should I check here if toggle.checked
          */
         document.querySelector("#Gift-Button")!.addEventListener("click",(): void=>{
             this.#companyController.addClick();

@@ -2,10 +2,11 @@ import HomePageController from "./Controller/HomePageController.ts";
 import ddl from '../create-tables.sql?raw'
 import csv from './model.csv?raw'
 import db from './Model/connection.ts'
+import Company from "./Model/Company.ts";
 // load the tables into the database:
 
 /*
-This mehtod below takes the raw string and converts the string into matrix, which we'll be injecting into our controller
+This method below takes the raw string and converts the string into matrix, which we'll be injecting into our controller
  */
 function exec(csv:string) {
     let matrix: number[][] = [];
@@ -36,9 +37,15 @@ function dexec(numerator: number[][]): number[] {
 }
 const numerator = exec(csv);
 const denominator = dexec(numerator);
+
+
 db().exec(ddl)
+
+Company.loadMatrix(numerator, denominator);
+
+new HomePageController();
+
 
 /*
 Let's work form here
  */
-new HomePageController(numerator, denominator);

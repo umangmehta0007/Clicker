@@ -56,7 +56,6 @@ export default class  CompanyView{
          */
         document.querySelector("#Gift-Button")!.addEventListener("click",(): void=>{
             this.#companyController.addClick();
-            this.#companyController.autoBuy();
         })
 
 
@@ -72,7 +71,6 @@ export default class  CompanyView{
         if(!this.#hasStarted) {
             setInterval(async () => {
                 await this.#company.addGifts();
-                this.#companyController.autoBuy();
             }, 1000);
 
             this.#hasStarted =true;
@@ -89,7 +87,7 @@ export default class  CompanyView{
         <strong>Total Buildings: ${this.#company.buildings.length}</strong>
         `;
 
-        document.querySelector("#upgrades")!.append(this.#internalState);
+        document.querySelector("#purchasables")!.append(this.#internalState);
     }
 
 }

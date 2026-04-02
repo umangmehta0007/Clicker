@@ -20,14 +20,11 @@ export default class HomePageController{
     #signInAccount?: SigninAccountView;
     #newAccount?: CreateNewAccountView;
     #companyController?: CompanyController;
-    #numerator:number[][];
-    #denominator:number[];
 
 
-    constructor(numerator:number[][],denominator:number[]){
+
+    constructor(){
         this.#homePageView = new HomePageView(this);
-        this.#numerator = numerator;
-        this.#denominator = denominator;
     }
 
 
@@ -82,12 +79,6 @@ export default class HomePageController{
         const dbAccounts = await Account.loadAccount(account);
 
         const dbAccount = dbAccounts[0];
-
-        let company =  dbAccount.company;
-
-        company.numerator = this.#numerator;
-        company.denominator = this.#denominator;
-
         this.#signInAccount= undefined;
 
         this.#companyController = new CompanyController(dbAccount.company);
@@ -116,9 +107,6 @@ export default class HomePageController{
         await Account.saveAccount(account, company);
 
         await Company.createCompany(company);
-
-        company.numerator = this.#numerator;
-        company.denominator = this.#denominator;
 
         this.#newAccount = undefined;
     }

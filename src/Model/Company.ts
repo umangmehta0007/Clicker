@@ -6,6 +6,7 @@ import Buildings from "./Buildings.ts";
 import Account from "./Account.ts";
 import db from "./connection.ts";
 import seedrandom from "seedrandom";
+import PurchasableFactory from "./PurchasableFactory.ts";
 
 /**
  * Represents a company in the game.
@@ -15,6 +16,14 @@ import seedrandom from "seedrandom";
  * saving/loading its state from the database.
  */
 export default class Company{
+
+
+    static #numerator:number[][];
+    static #denominator:number[];
+
+
+    // @ts-ignore
+    #inventory:any;
 
     #name: string;
     #upgrades: Array<Upgrades>;
@@ -27,9 +36,6 @@ export default class Company{
     #rng;
 
     #lastPurchase:number;
-
-    #numerator?:number[][];
-    #denominator?:number[];
 
     constructor(name: string,account:Account){
         this.#name = name;
@@ -141,13 +147,30 @@ export default class Company{
         return this.#upgrades;
     }
 
+    get inventory(){
+        return this.#inventory;
+    }
+
 
     /*
    This method is for the listener when a button is clicked.
     */
 
+    async buyItem(position:number){
 
-    async buyUpgrade(u:Upgrades,index:number){
+        // @ts-ignore
+        const inventory = this.#inventory[position];
+
+        const purchasable = PurchasableFactory.create(inventory, this);
+
+        if (purchasable instanceof Buildings) {
+            await this.#buyBuildings(purchasable,position);
+        }else {
+            await this.#buyUpgrade(purchasable, position);
+        }
+    }
+
+    async #buyUpgrade(u:Upgrades,index:number){
 
         console.log("Gifts:", this.#totalGifts, "Price:", u.price);
 
@@ -169,7 +192,7 @@ export default class Company{
         this.#lastPurchase = index;
     }
 
-    async buyBuildings(b:Buildings,index:number){
+    async #buyBuildings(b:Buildings,index:number){
 
         if (this.#totalGifts < b.price) {
             throw new NotEnoughGiftsException();
@@ -263,6 +286,7 @@ export default class Company{
     /**
      * Adds one gift when user clicks.Also gets modified based on upgrades you have.
      */
+
     async addClick() {
 
         const addition = this.#clicksFromAddition();
@@ -274,7 +298,10 @@ export default class Company{
         this.#totalGifts += total;
 
         await this.#saveCompany();
+
         this.#notifyAll();
+
+        this.roboBuy();
 
     }
 
@@ -299,34 +326,42 @@ export default class Company{
 
         await this.#saveCompany();
         this.#notifyAll();
+
+        this.roboBuy();
     }
 
-    set numerator(numerator:number[][]){
-        this.#numerator = numerator;
-    }
-    set denominator(denominator:number[]){
-        this.#denominator = denominator;
-    }
+    async roboBuy(){
 
-    roboBuy():number{
 
-        let position=0;
+        if(this.#markovEnabled && this.#lastPurchase>=0){
 
-        let randomSeed = 1-this.#rng();//Keeping it inclusive for (0,1]
+            let position=0;
 
-        let randomNumber = randomSeed*(this.#denominator![this.#lastPurchase!]);
+            let randomSeed = 1-this.#rng();//Keeping it inclusive for (0,1]
 
-        let sum = 0;
+            let randomNumber = randomSeed*(Company.#denominator![this.#lastPurchase!]);
 
-        for(let row of this.#numerator![this.#lastPurchase!]){
-            sum+=row;
+            let sum = 0;
 
-            if(sum<randomNumber) {
-                position++;
+            for(let row of Company.#numerator![this.#lastPurchase!]){
+                sum+=row;
+
+                if(sum<randomNumber) {
+                    position++;
+                }
             }
-        }
 
-        return position;
+            try{
+                await this.buyItem(position);
+            }catch(e){
+                if (e instanceof NotEnoughGiftsException) {
+                    //Ignoring this exception
+                }else{
+                    console.log("Other error");
+                }
+            }
+
+        }
     }
 
 
@@ -335,16 +370,12 @@ export default class Company{
         this.#markovEnabled = newState;
     }
 
-    get markovEnabled(){
-
-        return this.#markovEnabled;
-    }
     get lastPurchase(){
         return this.#lastPurchase;
     }
 
 
-    static async getInventory() {
+    async loadInventory() {
         const results = await db().query<{
             id: number,
             price:number,
@@ -353,7 +384,13 @@ export default class Company{
         }>(`
             SELECT * FROM inventory
         `);
-        return results.rows;
+
+        this.#inventory = results.rows;
+    }
+
+    static loadMatrix(numerator:number[][], denominator:number[]){
+        this.#numerator = numerator;
+        this.#denominator = denominator;
     }
 }
 

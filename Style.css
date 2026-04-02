@@ -15,7 +15,7 @@ body {
     box-shadow: 0 12px 28px rgba(0,0,0,0.12);
 
     display: flex;
-    flex-direction: column; /* ❗ no center alignment */
+    flex-direction: column;
 }
 
 /* ===== Gift Button ===== */
@@ -32,7 +32,7 @@ body {
     align-items: center;
     justify-content: center;
 
-    margin: 0 auto; /* center only this */
+    margin: 0 auto;
 
     transition: transform 0.1s ease;
 }
@@ -65,34 +65,34 @@ ul {
     text-align: center;
 }
 
-/* ===== Two Column Layout ===== */
+/* ===== Purchasables (UPDATED GRID) ===== */
 #purchasables {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
     margin-top: 20px;
 }
 
-#upgrades, #buildings {
-    width: 48%;
+/* each section (upgrades, buildings, future ones) */
+#purchasables > div {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    background: #fafafa;
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
 }
 
-/* optional divider */
-#upgrades {
-    border-right: 2px solid #ccc;
-    padding-right: 10px;
-}
-
-#buildings {
-    padding-left: 10px;
+/* ===== Section Titles ===== */
+#purchasables h3 {
+    margin-bottom: 8px;
+    text-align: center;
+    color: #444;
 }
 
 /* ===== Buttons ===== */
-#upgrades button,
-#buildings button {
+#purchasables button {
     height: 64px;
     border-radius: 14px;
     border: none;
@@ -102,29 +102,20 @@ ul {
     padding-left: 70px;
     background: #eef2ff;
     position: relative;
+
     transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-#upgrades h3, #buildings h3 {
-    margin-bottom: 10px;
-    text-align: center;
-    color: #444;
-}
-
-/* hover */
-#upgrades button:hover,
-#buildings button:hover {
+#purchasables button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 14px rgba(0,0,0,0.12);
 }
 
-/* click */
-#upgrades button:active,
-#buildings button:active {
+#purchasables button:active {
     transform: scale(0.97);
 }
 
-/* ===== Emojis ===== */
+/* ===== Emojis (Icons) ===== */
 #Employee::before {
     content: "👨‍💼";
     font-size: 32px;
@@ -151,13 +142,10 @@ ul {
 }
 
 body:has(#Gift-Button:active)::after {
-    content:
-            "🎁";
-    white-space: pre;
+    content: "🎁";
     position: fixed;
     inset: 0;
     font-size: 48px;
-    line-height: 1.6;
     text-align: center;
     background: rgba(255,255,255,0.6);
     animation: screenFade 0.7s ease-out;

@@ -5,6 +5,7 @@ import assert from "../assertions.ts";
 import Buildings from "./Buildings.ts";
 import Account from "./Account.ts";
 import db from "./connection.ts";
+import seedrandom from "seedrandom";
 
 /**
  * Represents a company in the game.
@@ -21,12 +22,22 @@ export default class Company{
     #totalGifts: number;
     #listeners: Array<Listener>;
     #account: Account;
+    #markovEnabled: boolean;
 
-    constructor(name: string,account:Account ){
+    #rng;
+
+    #lastPurchase:number;
+
+    #numerator?:number[][];
+    #denominator?:number[];
+
+    constructor(name: string,account:Account){
         this.#name = name;
         this.#account = account;
         this.#upgrades = [];
         this.#buildings = [];
+        this.#rng = seedrandom("comp2452");
+        this.#markovEnabled = false;
 
         this.#totalGifts = 0;
         this.#listeners = new Array<Listener>();
@@ -34,6 +45,9 @@ export default class Company{
         if(this.#name.length <1){
             throw new InvalidNameException();
         }
+
+        this.#lastPurchase = -1;
+
         this.#checkCompany();
     }
 
@@ -133,7 +147,7 @@ export default class Company{
     */
 
 
-    async buyUpgrade(u:Upgrades){
+    async buyUpgrade(u:Upgrades,index:number){
 
         console.log("Gifts:", this.#totalGifts, "Price:", u.price);
 
@@ -152,9 +166,10 @@ export default class Company{
         /*
         This notifyAll here is just additonal part: I know it voilates mvp but this is just for visual purposes
         */
+        this.#lastPurchase = index;
     }
 
-    async buyBuildings(b:Buildings){
+    async buyBuildings(b:Buildings,index:number){
 
         if (this.#totalGifts < b.price) {
             throw new NotEnoughGiftsException();
@@ -167,6 +182,8 @@ export default class Company{
         This notifyAll here is just additional part: I know it violates mvp but this is just for visual purposes
         */
         this.#notifyAll();
+        this.#lastPurchase = index;
+
     }
 
 
@@ -258,6 +275,7 @@ export default class Company{
 
         await this.#saveCompany();
         this.#notifyAll();
+
     }
 
     /**
@@ -283,6 +301,60 @@ export default class Company{
         this.#notifyAll();
     }
 
+    set numerator(numerator:number[][]){
+        this.#numerator = numerator;
+    }
+    set denominator(denominator:number[]){
+        this.#denominator = denominator;
+    }
+
+    roboBuy():number{
+
+        let position=0;
+
+        let randomSeed = 1-this.#rng();//Keeping it inclusive for (0,1]
+
+        let randomNumber = randomSeed*(this.#denominator![this.#lastPurchase!]);
+
+        let sum = 0;
+
+        for(let row of this.#numerator![this.#lastPurchase!]){
+            sum+=row;
+
+            if(sum<randomNumber) {
+                position++;
+            }
+        }
+
+        return position;
+    }
+
+
+    set markovEnabled(newState:boolean){
+
+        this.#markovEnabled = newState;
+    }
+
+    get markovEnabled(){
+
+        return this.#markovEnabled;
+    }
+    get lastPurchase(){
+        return this.#lastPurchase;
+    }
+
+
+    static async getInventory() {
+        const results = await db().query<{
+            id: number,
+            price:number,
+            productionvalue:number,
+            types:string
+        }>(`
+            SELECT * FROM inventory
+        `);
+        return results.rows;
+    }
 }
 
 export class InvalidNameException extends Error{}

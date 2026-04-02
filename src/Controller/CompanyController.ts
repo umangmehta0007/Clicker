@@ -54,7 +54,7 @@ export default class CompanyController{
         const inventory = this.#upgrades[position];
         const upgrade = UpgradesFactory.create(inventory, this.#company);
 
-        await this.#company.buyUpgrade(upgrade);
+        await this.#company.buyUpgrade(upgrade,position);
     }
 
 
@@ -64,15 +64,45 @@ export default class CompanyController{
 
         const building = BuildingFactory.create(inventory, this.#company);
 
-        await this.#company.buyBuildings(building);
+        await this.#company.buyBuildings(building,position);
     }
 
+    toggleAutoBuy(isOn:boolean){
 
+        let success:boolean = (this.#company.lastPurchase >= 0);
+        if(isOn){
+            if(success){
+                this.#company.markovEnabled = true;
+            }
+        }else{
+            this.#company.markovEnabled = false;
+        }
 
-    /**
-     * Starts automatic gift generation for the company.
-     *
-     * Calls addGifts every second to update total gifts over time.
+        return success;
+    }
+
+    enableMarkov(){
+
+    }
+
+    /*
+    As per the ddl the indecies from 0-4 are the Buildings and 5-9 are the upgrades
      */
+    autoBuy(){
+        let startingIndexOfUpgrades: number =5;
+        console.log("check1");
 
+        if(this.#company.markovEnabled){
+            console.log("check2");
+
+            const newPurchase = this.#company.roboBuy();
+
+           console.log(newPurchase);
+           if(newPurchase >=startingIndexOfUpgrades){
+               this.buyUpgrade(newPurchase-startingIndexOfUpgrades);
+           }else{
+               this.buyBuilding(newPurchase);
+           }
+        }
+    }
 }

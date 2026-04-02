@@ -8,27 +8,62 @@ export default class  CompanyView{
     #companyController: CompanyController;
     #hasStarted: boolean;
 
+
+
     /*
-    This internalState just additonal part: I know it voilates mvp but this is just for visual purposes
+    This internalState just additional part: I know it violates mvp but this is just for visual purposes
      */
     #internalState!: HTMLDivElement
 
-    constructor(company: Company,companyController: CompanyController ){
+    constructor(company: Company,companyController: CompanyController){
 
         this.#company = company;
+
         this.#companyController = companyController;
         this.#hasStarted = false;
         this.#company.registerListener(this);
         document.querySelector('#app')!.innerHTML =
-            "<div id = 'company' >" +
-            "<button id = 'Gift-Button'> Deliver Happiness </button> " +
-            "<ul></ul> " +
-            "</div>"
+            "<div id='company'>" +
+            "<button id='Gift-Button'> Deliver Happiness </button>" +
+            "<label>" +
+            "<input type='checkbox' id='auto-buy-toggle' /> Auto Buy" +
+            "</label>" +
+            "<ul></ul>" +
+            "</div>";
 
         this.#teamEl = document.querySelector('#company>ul')!;
         this.#internalState = document.createElement("div");
 
-        document.querySelector("#Gift-Button")!.addEventListener("click",(): void=>this.#companyController.addClick())
+        const toggle = document.querySelector('#auto-buy-toggle') as HTMLInputElement;
+
+        toggle.addEventListener("change", () => {
+            const success = this.#companyController.toggleAutoBuy(toggle.checked);
+
+            /*
+            Other technique i could have done was to call a method in controller,
+            That would change company's state , and if there are no purchases it woudl throw an exception
+            and it would be caught here and change toggle state
+             */
+            if (!success) {
+                toggle.checked = false;
+                alert("You must make at least one purchase first.");
+            }
+        });
+
+        /*
+        Ask professor if this autoBuying should be initilized in here or inside the model itself
+         */
+        document.querySelector("#Gift-Button")!.addEventListener("click",(): void=>{
+            this.#companyController.addClick();
+            this.#companyController.autoBuy();
+        })
+
+
+        /*
+        Toggle Taken from chatGPT
+         */
+
+
         this.addEverySecond();
     }
 
@@ -36,6 +71,7 @@ export default class  CompanyView{
         if(!this.#hasStarted) {
             setInterval(async () => {
                 await this.#company.addGifts();
+                this.#companyController.autoBuy();
             }, 1000);
 
             this.#hasStarted =true;

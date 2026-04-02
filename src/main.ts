@@ -4,6 +4,9 @@ import csv from './model.csv?raw'
 import db from './Model/connection.ts'
 // load the tables into the database:
 
+/*
+This mehtod below takes the raw string and converts the string into matrix, which we'll be injecting into our controller
+ */
 function exec(csv:string) {
     let matrix: number[][] = [];
     const lines = csv.trim().split("\n");

@@ -8,6 +8,12 @@ ___
 Gift Clicker is an implementation of clicker games (also called "idle" or [incremental games](https://en.wikipedia.org/wiki/Incremental_game)) for COMP 2452.
 It is an event-driven program where each click corresponds to a successful gift delivery to our customer (like [Amazon](https://www.amazon.ca) or [FedEx](https://www.fedex.com/en-ca/home.html)).
 
+**IMPORTANT NOTE FOR GRADERS** 
+
+* The random seed for the Markov-based auto-buy feature is currently defined inside the `Company` class using `seedrandom("comp2452")`.
+* If you want different behavior (e.g., different purchase patterns), you can change the seed value directly in the `Company` class.
+* Modifying the seed will produce a different sequence of automated purchases.
+
 # Playing The Clicker Game: 
 
 ### Implementation Details 1 : SIGN IN / SIGN UP

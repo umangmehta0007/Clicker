@@ -17,13 +17,12 @@ import PurchasableFactory from "./PurchasableFactory.ts";
  */
 export default class Company{
 
+    static #numerator: number[][];     // Transition counts for each state (Markov matrix numerators)
+    static #denominator: number[];     // Total outgoing counts per state (row sums of rows)
 
-    static #numerator:number[][];
-    static #denominator:number[];
 
 
-    // @ts-ignore
-    #inventory:any;
+    #inventory?:any;
 
     #name: string;
     #upgrades: Array<Upgrades>;
@@ -155,7 +154,19 @@ export default class Company{
     /*
    This method is for the listener when a button is clicked.
     */
-
+    /**
+     * Purchases an item at the given position from the inventory.
+     *
+     * @param position the index of the item in the inventory.
+     *
+     * @return resolves when the purchase operation is complete.
+     *
+     * Side effects:
+     * - Creates a purchasable item using the factory
+     * - Deducts gifts from the company
+     * - Adds the item to upgrades or buildings
+     * - Updates the last purchase state
+     */
     async buyItem(position:number){
 
         // @ts-ignore
@@ -330,6 +341,21 @@ export default class Company{
         this.roboBuy();
     }
 
+    /**
+     * Performs an automatic purchase using the Markov chain.
+     *
+     * Preconditions:
+     * Auto-buy (Markov) must be enabled.
+     * A valid previous purchase must exist (lastPurchase >= 0).
+     *
+     * @return resolves when the auto-buy attempt is complete.
+     *
+     * Side effects:
+     *  Generates a random next state using the Markov transition matrix
+     *  Attempts to purchase the selected item from inventory
+     *  Updates company state if the purchase succeeds
+     *  ignores insufficient funds errors
+     */
     async roboBuy(){
 
 
@@ -374,7 +400,13 @@ export default class Company{
         return this.#lastPurchase;
     }
 
-
+    /**
+     * Loads the inventory from the database and stores it in the company.
+     *
+     * Side effects:
+     * - Queries the database for all inventory items
+     * - Updates the company's internal inventory state
+     */
     async loadInventory() {
         const results = await db().query<{
             id: number,

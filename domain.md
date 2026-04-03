@@ -132,6 +132,18 @@ classDiagram
     Amazon--|>Buildings
     
 ```
+
+# Changes for Phase 3 Implementation
+
+- Refactored purchasing logic by merging `buyUpgrade` and `buyBuilding` into a single `buyItem` method.
+- Introduced a unified `PurchasableFactory` to create both upgrades and buildings based on `types`.
+- Moved all Markov chain (auto-buy) logic fully into the `Company` model.
+- Ensured the controller and view do not access or interpret Markov-related data.
+- Replaced separate upgrade and building lists in the view with a single unified `purchasables` list.
+- Simplified view event handling to use a single `buyItem(index)` call.
+- Added inventory loading via `loadInventory()` in the model.
+
+
 ### Modifications for Phase 2 Implementation: 
 Modifications for Phase 2 Implementation:
 * Added database support so Accounts, Companies, Upgrades, and Buildings can be saved and loaded 
@@ -154,3 +166,7 @@ Modifications for Phase 2 Implementation:
 * `clicksFromAddition()` – calculates extra gifts from addition upgrades 
 * `clicksFromMultiplication()` – calculates multiplier effect from upgrades 
 * `cpsFromBuildings()` – calculates gifts per second from buildings
+
+
+
+#

@@ -1,5 +1,5 @@
 import CompanyController from "../Controller/CompanyController.ts";
-import Company, {NotEnoughGiftsException} from "../Model/Company.ts";
+import  {NotEnoughGiftsException} from "../Model/Company.ts";
 
 //import Company from "../Model/Company.ts";
 

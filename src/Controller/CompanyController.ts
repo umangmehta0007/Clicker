@@ -33,6 +33,17 @@ export default class CompanyController{
          await this.#company.buyItem(position);
     }
 
+    /**
+     * Enables or disables the auto-buy (Markov) feature.
+     *
+     * @param isOn true to enable auto-buy, false to disable it.
+     * @return true if auto-buy can be enabled (i.e., at least one purchase has been made),
+     *         false otherwise.
+     *
+     * Side effects:
+     * - Updates the markovEnabled state in the Company.
+     */
+
     toggleAutoBuy(isOn:boolean){
 
         let success:boolean = (this.#company.lastPurchase >= 0);

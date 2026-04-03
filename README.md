@@ -1,7 +1,7 @@
 ___
 # Gift Clicker
 ### Author: Umang Mehta (mehtau@myumanitoba.ca)
-### Date: March 20, 2026
+### Date: April 2, 2026
 ___
 # Overview
 
@@ -27,6 +27,12 @@ It is an event-driven program where each click corresponds to a successful gift 
 * Clicks per second (CPS) are calculated based on buildings, with upgrades modifying their output.
 * Addition upgrades increase the base CPS, and multiplier upgrades scale the total CPS.
 * Total Gifts were generated only from buildings and their associated upgrades, while manual clicks (addClick) increment gifts independently.
+* 
+### Implementation Details 4 : Auto-Buy (Markov Chain)
+* A checkbox toggle is introduced in the view to enable or disable the auto-buy feature.
+* When enabled, the model uses a Markov chain to determine the next item to purchase based on the last purchase.
+* Auto-buy is only activated if at least one previous purchase exists (`lastPurchase >= 0`).
+* After gifts are updated (via clicks or CPS), the model internally triggers the Markov logic to select the next item.
 
 ### You can expand your company with upgrades, limited to **two** for the first phase:
 
@@ -55,6 +61,17 @@ Expansion in Phase 2 was made by Adding buildings:
 All core logic, architecture, and implementation were completed independently.
 
 # Running
+
+
+Before running the application, you must first work with the `training` setup to generate the Markov transition matrix:
+
+* Navigate to the `training` folder.
+* Run the `training.java` file.
+* This will train the Markov model and generate a CSV file (`model.csv`) directly in the correct location.
+
+**Important:** Please make sure that the `training` folder and the main project share the folder so the generated file is accessible to the application.
+
+After completing the above step, you can run:
 
 This project is a Node.js project using Vite. You can run it on the command
 line using `npx` (if you don't have npm installed):
